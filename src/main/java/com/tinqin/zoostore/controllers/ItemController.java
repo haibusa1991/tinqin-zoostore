@@ -1,6 +1,10 @@
 package com.tinqin.zoostore.controllers;
 
 import com.tinqin.zoostore.dto.item.*;
+import com.tinqin.zoostore.responses.item.GetAllItemsResponse;
+import com.tinqin.zoostore.services.item.ItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,32 +16,45 @@ import java.util.List;
 @RequestMapping(path = "/items")
 public class ItemController {
 
-    ////////////////////////////////////////////////////
-    //          Item
+    private final ItemService itemService;
 
-    @GetMapping()
-    public ResponseEntity<List<ItemDto>> getAllItems() {
-        //TODO returns list of all items or 404
-        return ResponseEntity.ok(List.of(
-                new ItemDto("12345-mock",
-                        "title 1",
-                        "description 1",
-                        "12345-mock",
-                        new String[]{"multimedia id1", " multimedia id2"},
-                        new String[]{"tag id1", " tag id2"}
-                ),
-                new ItemDto("56789-mock",
-                        "title 2",
-                        "description 2",
-                        "12345-mock",
-                        new String[]{"multimedia id3", " multimedia id4"},
-                        new String[]{"tag id2", " tag id3"}
-                )));
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
     }
 
+    @Operation(description = "Returns list of all items", summary = "Get all items")
+    @ApiResponse(responseCode = "404", description = "no items found")
+    @ApiResponse(responseCode = "200", description = "list of all items")
+    @GetMapping()
+    public ResponseEntity<List<GetAllItemsResponse>> getAllItems() {
+
+        return this.itemService.getAllItems();
+//        //TODO returns list of all items or 404
+//        return ResponseEntity.ok(List.of(
+//                new ItemDto("12345-mock",
+//                        "title 1",
+//                        "description 1",
+//                        "12345-mock",
+//                        new String[]{"multimedia id1", " multimedia id2"},
+//                        new String[]{"tag id1", " tag id2"}
+//                ),
+//                new ItemDto("56789-mock",
+//                        "title 2",
+//                        "description 2",
+//                        "12345-mock",
+//                        new String[]{"multimedia id3", " multimedia id4"},
+//                        new String[]{"tag id2", " tag id3"}
+//                )));
+    }
+
+    @Operation(description = "Returns the requested item when requested by id.", summary = "Returns item by id.")
+    @ApiResponse(responseCode = "200",description = "Returns item.")
+    @ApiResponse(responseCode = "404",description = "No item found by the specified id.")
     @GetMapping(path = "/{itemId}")
     public ResponseEntity<ItemDto> getItemById(@PathVariable String itemId) {
         //TODO returns item by id or 404
+
+
         return ResponseEntity.ok(new ItemDto(itemId + "-mock",
                 "title 1",
                 "description 1",
@@ -76,12 +93,8 @@ public class ItemController {
     public ResponseEntity<String> archiveItem(@RequestParam Boolean isArchived, @PathVariable String itemId) {
         //TODO returns 204 or error
 
-//        return new ResponseEntity<>(String.format("Item with id %s moved %s archive.", itemId, isArchived ? "to":"from"), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    ////////////////////////////////////////////////////
-    //          Tags
 
     @PutMapping(path = "/{itemId}/tags")
     public ResponseEntity<ItemDto> replaceItemTags(@RequestBody ItemTagsDto dto, @PathVariable String itemId) {
@@ -118,9 +131,6 @@ public class ItemController {
                 new String[]{"tag id1", "tag id2", "following tags removed: " + Arrays.toString(dto.getTagIds())}
         ), HttpStatus.OK);
     }
-
-    ////////////////////////////////////////////////////
-    //          Multimedia
 
 
     @PutMapping(path = "/{itemId}/multimedia")
