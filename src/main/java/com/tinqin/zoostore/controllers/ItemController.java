@@ -1,9 +1,11 @@
 package com.tinqin.zoostore.controllers;
 
 import com.tinqin.zoostore.dto.item.*;
+import com.tinqin.zoostore.responses.item.GetItemByIdResponse;
 import com.tinqin.zoostore.responses.item.GetAllItemsResponse;
 import com.tinqin.zoostore.services.item.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,45 +25,33 @@ public class ItemController {
     }
 
     @Operation(description = "Returns list of all items", summary = "Get all items")
-    @ApiResponse(responseCode = "404", description = "no items found")
+    @ApiResponse(responseCode = "404", description = "no items found", content = @Content(examples = {}))
     @ApiResponse(responseCode = "200", description = "list of all items")
     @GetMapping()
     public ResponseEntity<List<GetAllItemsResponse>> getAllItems() {
+        List<GetAllItemsResponse> allItems = this.itemService.getAllItems();
 
-        return this.itemService.getAllItems();
-//        //TODO returns list of all items or 404
-//        return ResponseEntity.ok(List.of(
-//                new ItemDto("12345-mock",
-//                        "title 1",
-//                        "description 1",
-//                        "12345-mock",
-//                        new String[]{"multimedia id1", " multimedia id2"},
-//                        new String[]{"tag id1", " tag id2"}
-//                ),
-//                new ItemDto("56789-mock",
-//                        "title 2",
-//                        "description 2",
-//                        "12345-mock",
-//                        new String[]{"multimedia id3", " multimedia id4"},
-//                        new String[]{"tag id2", " tag id3"}
-//                )));
+        if (allItems.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(allItems, HttpStatus.OK);
     }
 
+
     @Operation(description = "Returns the requested item when requested by id.", summary = "Returns item by id.")
-    @ApiResponse(responseCode = "200",description = "Returns item.")
-    @ApiResponse(responseCode = "404",description = "No item found by the specified id.")
+    @ApiResponse(responseCode = "200", description = "Returns item.")
+    @ApiResponse(responseCode = "404", description = "No item found by the specified id.")
     @GetMapping(path = "/{itemId}")
-    public ResponseEntity<ItemDto> getItemById(@PathVariable String itemId) {
-        //TODO returns item by id or 404
+    public ResponseEntity<GetItemByIdResponse> getItemById(@PathVariable String itemId) {
 
+        GetItemByIdResponse response = this.itemService.getItemById(itemId);
 
-        return ResponseEntity.ok(new ItemDto(itemId + "-mock",
-                "title 1",
-                "description 1",
-                "12345-mock",
-                new String[]{"multimedia id1", " multimedia id2"},
-                new String[]{"tag id1", " tag id2"}
-        ));
+        if (response==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping()
