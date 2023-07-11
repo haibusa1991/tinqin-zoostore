@@ -45,6 +45,13 @@ public class EntityInitialization implements CommandLineRunner {
         this.tagRepository.saveAll(tags);
     }
 
+    private void initVendors() {
+        if (this.vendorRepository.count() > 0) {
+            return;
+        }
+        this.vendorRepository.save(Vendor.builder().name("Whiskas").build());
+    }
+
     public void initItems() {
         if (this.itemRepository.count() > 0) {
             return;
@@ -69,12 +76,5 @@ public class EntityInitialization implements CommandLineRunner {
         );
 
         this.itemRepository.saveAll(items);
-    }
-
-    private void initVendors() {
-        if (this.vendorRepository.count() > 0) {
-            return;
-        }
-        this.vendorRepository.save(Vendor.builder().name("Whiskas").build());
     }
 }

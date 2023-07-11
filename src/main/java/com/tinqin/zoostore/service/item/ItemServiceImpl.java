@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public GetItemByIdResponse getItemById(String itemId) {
-        return this.getItemById();
+        return this.getItemService.getItemById(itemId);
     }
 
 
