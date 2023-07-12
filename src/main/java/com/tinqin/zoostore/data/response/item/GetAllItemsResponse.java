@@ -2,6 +2,9 @@ package com.tinqin.zoostore.data.response.item;
 
 import lombok.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -9,10 +12,5 @@ import lombok.*;
 @Builder
 public class GetAllItemsResponse {
 
-    private String id;
-    private String title;
-    private String description;
-    private String vendorId;
-    private String[] multimedia;
-    private String[] tags;
+    private Set<GetItemByIdResponse> items;
 }

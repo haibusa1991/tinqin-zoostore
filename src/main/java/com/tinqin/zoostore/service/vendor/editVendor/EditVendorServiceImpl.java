@@ -20,7 +20,8 @@ public class EditVendorServiceImpl implements EditVendorService {
 
     @Override
     public EditVendorResponse editVendor(EditVendorRequest request) {
-        Vendor vendor = this.getVendorService.getVendorById(UUID.fromString(request.getId()));
+        //TODO fix optional
+        Vendor vendor = this.getVendorService.getVendorById(UUID.fromString(request.getId())).get();
         vendor.setName(request.getName());
         Vendor persisted = this.vendorRepository.save(vendor);
 

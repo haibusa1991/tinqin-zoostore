@@ -6,8 +6,9 @@ import com.tinqin.zoostore.data.response.item.GetItemByIdResponse;
 import com.tinqin.zoostore.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class GetItemServiceImpl implements GetItemService {
@@ -18,29 +19,22 @@ public class GetItemServiceImpl implements GetItemService {
     }
 
     @Override
-    public List<GetAllItemsResponse> getAllItemsResponse() {
-        return this.itemRepository.findAll().stream().map(this::mapToGetAllItemsResponse).toList();
+    public GetAllItemsResponse getAllItemsResponse() {
+
+        return GetAllItemsResponse.builder()
+                .items(this.itemRepository.findAll().stream().map(this::mapItemToGetItemByIdResponse).collect(Collectors.toSet()))
+                .build();
     }
 
     @Override
     public GetItemByIdResponse getItemById(String itemId) {
-        Item item = this.itemRepository.getItemById(UUID.fromString(itemId));
-        return item == null ? null : mapToGetItemByIdResponse(item);
+        Optional<Item> item = this.itemRepository.findById(UUID.fromString(itemId));
+
+        //TODO add check
+        return this.mapItemToGetItemByIdResponse(item.get());
     }
 
-    private GetAllItemsResponse mapToGetAllItemsResponse(Item item) {
-
-        return GetAllItemsResponse.builder()
-                .id(item.getId().toString())
-                .title(item.getTitle())
-                .description(item.getDescription())
-                .vendorId(item.getVendorId().getId().toString())
-                .multimedia(item.getMultimediaLinks().stream().map(e -> e.getId().toString()).toArray(String[]::new))
-                .tags(item.getTags().stream().map(e -> e.getId().toString()).toArray(String[]::new))
-                .build();
-    }
-
-    private GetItemByIdResponse mapToGetItemByIdResponse(Item item) {
+    private GetItemByIdResponse mapItemToGetItemByIdResponse(Item item) {
 
         return GetItemByIdResponse.builder()
                 .id(item.getId().toString())

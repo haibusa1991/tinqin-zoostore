@@ -1,8 +1,7 @@
 package com.tinqin.zoostore.data.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -10,6 +9,9 @@ import java.util.UUID;
 @Table(name = "multimedia")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Multimedia {
 
     @Id

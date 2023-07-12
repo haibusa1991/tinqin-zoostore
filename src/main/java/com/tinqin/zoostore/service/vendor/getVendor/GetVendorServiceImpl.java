@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -25,8 +26,8 @@ public class GetVendorServiceImpl implements GetVendorService {
     }
 
     @Override
-    public Vendor getVendorById(UUID vendorId) {
-        return this.vendorRepository.getReferenceById(vendorId);
+    public Optional<Vendor> getVendorById(UUID vendorId) {
+        return this.vendorRepository.findById(vendorId);
     }
 
     @Override

@@ -9,10 +9,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "tags")
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tag {
 
     @Id

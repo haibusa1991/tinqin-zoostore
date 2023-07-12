@@ -7,9 +7,9 @@ import com.tinqin.zoostore.data.entity.Vendor;
 import com.tinqin.zoostore.data.request.item.CreateNewItemRequest;
 import com.tinqin.zoostore.data.response.item.CreateNewItemResponse;
 import com.tinqin.zoostore.repository.ItemRepository;
-import com.tinqin.zoostore.service.multimedia.MultimediaService;
-import com.tinqin.zoostore.service.tag.TagService;
-import com.tinqin.zoostore.service.vendor.VendorService;
+import com.tinqin.zoostore.service.multimedia.getMultimedia.GetMultimediaService;
+import com.tinqin.zoostore.service.tag.getTag.GetTagService;
+import com.tinqin.zoostore.service.vendor.getVendor.GetVendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,27 +17,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CreateItemServiceImpl implements CreateItemService {
-    private final VendorService vendorService;
-    private final MultimediaService multimediaService;
-    private final TagService tagService;
+
+    private final GetVendorService getVendorService;
+    private final GetMultimediaService getMultimediaService;
+    private final GetTagService getTagService;
     private final ItemRepository itemRepository;
 
     @Override
     public CreateNewItemResponse createNewItem(CreateNewItemRequest request) {
-        Vendor vendor = this.vendorService.getVendorById(UUID.fromString(request.getVendorId()));
-        Set<Multimedia> multimedia = this.multimediaService
-                .getAllMultimediaById(Arrays.stream(request.getMultimedia())
-                .map(UUID::fromString)
-                .toList());
+
+//        TODO add checks
+        Vendor vendor = this.getVendorService.getVendorById(UUID.fromString(request.getVendorId())).get();
+
+        Set<Multimedia> multimedia = this.getMultimediaService
+                .getMultimediaByIds(Arrays.stream(request.getMultimedia()).map(UUID::fromString).collect(Collectors.toSet()));
 
 
-        Set<Tag> tags = this.tagService.getAllTagsById(Arrays.stream(request.getTags())
-                .map(UUID::fromString)
-                .toList());
+        Set<Tag> tags = this.getTagService
+                .getTagsById(Arrays.stream(request.getTags()).map(UUID::fromString).collect(Collectors.toSet()));
+
 
 
         Item persisted = this.itemRepository.save(Item.builder()

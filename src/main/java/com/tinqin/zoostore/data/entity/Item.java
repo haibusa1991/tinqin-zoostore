@@ -26,14 +26,16 @@ public class Item {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Vendor vendorId;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item",fetch = FetchType.EAGER)
     private List<Multimedia> multimediaLinks;
+
+    private Boolean isArchived = false;
 
 
 }
