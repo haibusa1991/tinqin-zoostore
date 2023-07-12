@@ -22,6 +22,6 @@ public class Vendor {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "vendorId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "vendor", fetch = FetchType.EAGER)
     private Set<Item> items;
 }

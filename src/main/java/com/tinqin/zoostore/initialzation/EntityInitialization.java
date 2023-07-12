@@ -64,13 +64,13 @@ public class EntityInitialization implements CommandLineRunner {
         List<Item> items = List.of(Item.builder()
                         .title("Anti-Hairball")
                         .description("Reduces the risk of hairball forming.")
-                        .vendorId(whiskas)
+                        .vendor(whiskas)
                         .tags(Set.of(catFood))
                         .build(),
                 Item.builder()
                         .title("Crunchy pockets")
                         .description("Crunchy treat with soft filling.")
-                        .vendorId(whiskas)
+                        .vendor(whiskas)
                         .tags(Set.of(catFood, treat))
                         .build()
         );

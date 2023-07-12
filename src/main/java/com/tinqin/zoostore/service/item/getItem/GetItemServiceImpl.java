@@ -3,6 +3,7 @@ package com.tinqin.zoostore.service.item.getItem;
 import com.tinqin.zoostore.data.entity.Item;
 import com.tinqin.zoostore.data.response.item.GetAllItemsResponse;
 import com.tinqin.zoostore.data.response.item.GetItemByIdResponse;
+import com.tinqin.zoostore.exception.ItemNotFoundException;
 import com.tinqin.zoostore.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,22 @@ public class GetItemServiceImpl implements GetItemService {
     }
 
     @Override
-    public GetItemByIdResponse getItemById(String itemId) {
-        Optional<Item> item = this.itemRepository.findById(UUID.fromString(itemId));
+    public GetItemByIdResponse getItemById(String itemId) throws ItemNotFoundException {
 
-        //TODO add check
+        UUID id;
+        try {
+            id = UUID.fromString(itemId);
+        } catch (IllegalArgumentException e) {
+            throw new ItemNotFoundException();
+        }
+
+
+        Optional<Item> item = this.itemRepository.findById(id);
+
+        if(item.isEmpty()){
+            throw new ItemNotFoundException();
+        }
+
         return this.mapItemToGetItemByIdResponse(item.get());
     }
 
@@ -40,7 +53,7 @@ public class GetItemServiceImpl implements GetItemService {
                 .id(item.getId().toString())
                 .title(item.getTitle())
                 .description(item.getDescription())
-                .vendorId(item.getVendorId().getId().toString())
+                .vendorId(item.getVendor().getId().toString())
                 .multimedia(item.getMultimediaLinks().stream().map(e -> e.getId().toString()).toArray(String[]::new))
                 .tags(item.getTags().stream().map(e -> e.getId().toString()).toArray(String[]::new))
                 .build();

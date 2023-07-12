@@ -27,7 +27,7 @@ public class Item {
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Vendor vendorId;
+    private Vendor vendor;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
