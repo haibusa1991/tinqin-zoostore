@@ -52,6 +52,11 @@
 			<version>8.0.33</version>
 		</dependency>
 
+		<dependency>
+			<groupId>h2database</groupId>
+			<artifactId></artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
