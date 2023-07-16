@@ -1,9 +1,9 @@
 package com.tinqin.zoostore.service.vendor.getVendor;
 
 import com.tinqin.zoostore.data.entity.Vendor;
-import com.tinqin.zoostore.data.request.vendor.GetVendorByIdRequest;
 import com.tinqin.zoostore.data.response.vendor.GetAllVendorResponse;
 import com.tinqin.zoostore.data.response.vendor.GetVendorByIdResponse;
+import com.tinqin.zoostore.exception.IdNotFoundException;
 import com.tinqin.zoostore.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,16 @@ public class GetVendorServiceImpl implements GetVendorService {
     private final VendorRepository vendorRepository;
 
     @Override
-    public GetVendorByIdResponse getVendorById(GetVendorByIdRequest request) {
-        Vendor vendor = this.vendorRepository
-                .getReferenceById(UUID.fromString(request.getId()));
+    public GetVendorByIdResponse getVendorById(String vendorId) throws IdNotFoundException {
+        Optional<Vendor> vendorOptional = this.vendorRepository
+                .findById(UUID.fromString(vendorId));
 
-        return this.mapVendorToGetVendorByIdResponse(vendor);
+        if (vendorOptional.isEmpty()) {
+            throw new IdNotFoundException();
+        }
+
+
+        return this.mapVendorToGetVendorByIdResponse(vendorOptional.get());
     }
 
     @Override

@@ -1,49 +1,46 @@
 package com.tinqin.zoostore.controller;
 
+import com.tinqin.zoostore.data.request.tag.CreateTagRequest;
+import com.tinqin.zoostore.data.request.tag.EditTagRequest;
+import com.tinqin.zoostore.data.response.tag.CreateTagResponse;
+import com.tinqin.zoostore.data.response.tag.EditTagResponse;
+import com.tinqin.zoostore.data.response.tag.GetAllTagResponse;
+import com.tinqin.zoostore.data.response.tag.GetTagByIdResponse;
+import com.tinqin.zoostore.exception.IdNotFoundException;
+import com.tinqin.zoostore.service.tag.createTag.CreateTagService;
+import com.tinqin.zoostore.service.tag.editTag.EditTagService;
+import com.tinqin.zoostore.service.tag.getTag.GetTagService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/tags")
+@RequiredArgsConstructor
 public class TagController {
-//
-//    @GetMapping()
-//    public ResponseEntity<List<TagDto>> getAllTags() {
-//        //TODO returns all tags or 404
-//
-//        return ResponseEntity.ok(List.of(
-//                new TagDto("12345-mock", "tag 1"),
-//                new TagDto("67891-mock", "tag 2")
-//        ));
-//    }
-//
-//    @GetMapping(path = "/{tagId}")
-//    public ResponseEntity<TagDto> getTagById(@PathVariable String tagId) {
-//        //TODO returns tag by id or 404
-//
-//        return ResponseEntity.ok(new TagDto(tagId + "-mock", "tag 1"));
-//    }
-//
-//    @PostMapping()
-//    public ResponseEntity<TagDto> createNewTag(@RequestBody CreateTagDto dto) {
-//        //TODO returns persisted tag
-//
-//        return new ResponseEntity<>(new TagDto("123456-mock", dto.getValue()), HttpStatus.CREATED);
-//    }
-//
-//    @PatchMapping(path = "/{tagId}")
-//    public ResponseEntity<TagDto> editTag(@PathVariable String tagId, @RequestBody EditTagValueDto dto) {
-//        //TODO returns persisted tag or appropriate error
-//
-//        return new ResponseEntity<>(new TagDto(tagId, dto.getValue()), HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping(path = "/{tagId}")
-//    public ResponseEntity<String> deleteTag(@PathVariable String tagId) {
-//        //TODO returns 204 or appropriate error. Should not delete tag in use
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 
+    private final GetTagService getTagService;
+    private final CreateTagService createTagService;
+    private final EditTagService editTagService;
+
+    @GetMapping()
+    public ResponseEntity<GetAllTagResponse> getAllTags() {
+        return ResponseEntity.ok(this.getTagService.getAll());
+    }
+
+    @GetMapping(path = "/{tagId}")
+    public ResponseEntity<GetTagByIdResponse> getTagById(@PathVariable String tagId) {
+        return ResponseEntity.ok(this.getTagService.getTagById(tagId));
+    }
+
+    @PostMapping()
+    public ResponseEntity<CreateTagResponse> createNewTag(@RequestBody CreateTagRequest request) {
+        return new ResponseEntity<>(this.createTagService.createTag(request), HttpStatus.CREATED);
+    }
+
+    @PatchMapping(path = "/{tagId}")
+    public ResponseEntity<EditTagResponse> editTag(@PathVariable String tagId, @RequestBody EditTagRequest request) throws IdNotFoundException {
+        return ResponseEntity.ok(this.editTagService.editTag(request,tagId));
+    }
 }

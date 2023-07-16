@@ -4,6 +4,7 @@ import com.tinqin.zoostore.data.entity.Multimedia;
 import com.tinqin.zoostore.data.request.multimedia.GetMultimediaByIdRequest;
 import com.tinqin.zoostore.data.response.multimedia.GetAllMultimediaResponse;
 import com.tinqin.zoostore.data.response.multimedia.GetMultimediaByIdResponse;
+import com.tinqin.zoostore.exception.IdNotFoundException;
 import com.tinqin.zoostore.repository.MultimediaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,12 @@ public class GetMultimediaServiceImpl implements GetMultimediaService {
     private final MultimediaRepository multimediaRepository;
 
     @Override
-    public GetMultimediaByIdResponse getMultimediaById(GetMultimediaByIdRequest request) {
+    public GetMultimediaByIdResponse getMultimediaById(String multimediaId) throws IdNotFoundException {
 
-        Optional<Multimedia> multimedia = this.multimediaRepository.findById(UUID.fromString(request.getId()));
+        Optional<Multimedia> multimedia = this.multimediaRepository.findById(UUID.fromString(multimediaId));
 
-        //TODO Add exception handling
         if (multimedia.isEmpty()) {
-            throw new IllegalArgumentException("wrong id");
+            throw new IdNotFoundException();
         }
 
         return GetMultimediaByIdResponse.builder()

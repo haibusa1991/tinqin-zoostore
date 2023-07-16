@@ -6,7 +6,7 @@ import com.tinqin.zoostore.data.entity.Tag;
 import com.tinqin.zoostore.data.entity.Vendor;
 import com.tinqin.zoostore.data.request.item.*;
 import com.tinqin.zoostore.data.response.item.*;
-import com.tinqin.zoostore.exception.ItemNotFoundException;
+import com.tinqin.zoostore.exception.IdNotFoundException;
 import com.tinqin.zoostore.exception.VendorNotFoundException;
 import com.tinqin.zoostore.repository.ItemRepository;
 import com.tinqin.zoostore.service.multimedia.getMultimedia.GetMultimediaService;
@@ -31,7 +31,7 @@ public class EditItemServiceImpl implements EditItemService {
     private final GetTagService getTagService;
 
     @Override
-    public EditItemTitleResponse editItemTitle(EditItemTitleRequest request, String itemId) throws ItemNotFoundException {
+    public EditItemTitleResponse editItemTitle(EditItemTitleRequest request, String itemId) throws IdNotFoundException {
         Item item = this.getItemById(itemId);
         item.setTitle(request.getTitle());
 
@@ -49,7 +49,7 @@ public class EditItemServiceImpl implements EditItemService {
 
 
     @Override
-    public EditItemDescriptionResponse editItemDescription(EditItemDescriptionRequest request, String itemId) throws ItemNotFoundException {
+    public EditItemDescriptionResponse editItemDescription(EditItemDescriptionRequest request, String itemId) throws IdNotFoundException {
         Item item = this.getItemById(itemId);
 
         item.setTitle(request.getDescription());
@@ -67,7 +67,7 @@ public class EditItemServiceImpl implements EditItemService {
     }
 
     @Override
-    public EditItemVendorResponse editItemVendor(EditItemVendorRequest request, String itemId) throws ItemNotFoundException, VendorNotFoundException {
+    public EditItemVendorResponse editItemVendor(EditItemVendorRequest request, String itemId) throws IdNotFoundException, VendorNotFoundException {
         Item item = this.getItemById(itemId);
 
         Optional<Vendor> vendorById = this.getVendorService.getVendorById(UUID.fromString(request.getVendorId()));
@@ -91,7 +91,7 @@ public class EditItemServiceImpl implements EditItemService {
     }
 
     @Override
-    public EditItemMultimediaResponse editItemMultimedia(EditItemMultimediaRequest request, String itemId) throws ItemNotFoundException {
+    public EditItemMultimediaResponse editItemMultimedia(EditItemMultimediaRequest request, String itemId) throws IdNotFoundException {
         Set<Multimedia> multimedia = this.getMultimediaService.getMultimediaByIds(Arrays.stream(request.getMultimediaIds()).map(UUID::fromString).collect(Collectors.toSet()));
 
         Item item = this.getItemById(itemId);
@@ -109,7 +109,7 @@ public class EditItemServiceImpl implements EditItemService {
     }
 
     @Override
-    public EditItemTagsResponse editItemTags(EditItemTagsRequest request, String itemId) throws ItemNotFoundException {
+    public EditItemTagsResponse editItemTags(EditItemTagsRequest request, String itemId) throws IdNotFoundException {
         Set<Tag> tags = this.getTagService.getTagsById(Arrays.stream(request.getTagIds()).map(UUID::fromString).collect(Collectors.toSet()));
 
 
@@ -127,11 +127,18 @@ public class EditItemServiceImpl implements EditItemService {
                 .build();
     }
 
-    private Item getItemById(String itemId) throws ItemNotFoundException {
+    @Override
+    public void updateArchivedStatus(Boolean isArchived, String itemId) throws IdNotFoundException {
+        Item item = this.getItemById(itemId);
+        item.setIsArchived(isArchived);
+        this.itemRepository.save(item);
+    }
+
+    private Item getItemById(String itemId) throws IdNotFoundException {
         Optional<Item> item = this.itemRepository.findById(UUID.fromString(itemId));
 
         if (item.isEmpty()) {
-            throw new ItemNotFoundException();
+            throw new IdNotFoundException();
         }
 
         return item.get();

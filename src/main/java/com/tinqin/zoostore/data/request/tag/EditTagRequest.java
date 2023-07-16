@@ -7,8 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
-@Builder
 public class EditTagRequest {
-    private String id;
     private String name;
 }

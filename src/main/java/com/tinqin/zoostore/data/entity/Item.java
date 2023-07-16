@@ -11,16 +11,24 @@ import java.util.UUID;
 @Table(name = "items")
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Item {
+
+    @Builder
+    public Item(String title, String description, Vendor vendor, Set<Tag> tags, List<Multimedia> multimediaLinks) {
+        this.title = title;
+        this.description = description;
+        this.vendor = vendor;
+        this.tags = tags;
+        this.multimediaLinks = multimediaLinks;
+        this.isArchived = false;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String title;
 
     @Column(nullable = false)
@@ -32,10 +40,10 @@ public class Item {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "item",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private List<Multimedia> multimediaLinks;
 
-    private Boolean isArchived = false;
+    private Boolean isArchived;
 
 
 }

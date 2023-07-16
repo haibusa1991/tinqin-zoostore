@@ -7,8 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
-@Builder
 public class EditMultimediaRequest {
-    private String id;
     private String url;
 }

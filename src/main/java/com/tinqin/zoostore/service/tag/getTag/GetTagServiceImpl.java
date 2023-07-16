@@ -1,7 +1,6 @@
 package com.tinqin.zoostore.service.tag.getTag;
 
 import com.tinqin.zoostore.data.entity.Tag;
-import com.tinqin.zoostore.data.request.tag.GetTagByIdRequest;
 import com.tinqin.zoostore.data.response.tag.GetAllTagResponse;
 import com.tinqin.zoostore.data.response.tag.GetTagByIdResponse;
 import com.tinqin.zoostore.repository.TagRepository;
@@ -19,9 +18,9 @@ public class GetTagServiceImpl implements GetTagService {
     private final TagRepository tagRepository;
 
     @Override
-    public GetTagByIdResponse getTagById(GetTagByIdRequest request) {
+    public GetTagByIdResponse getTagById(String tagId) {
 
-        Tag tag = this.tagRepository.getReferenceById(UUID.fromString(request.getId()));
+        Tag tag = this.tagRepository.findById(UUID.fromString(tagId)).get();
 
         return GetTagByIdResponse.builder()
                 .id(tag.getId().toString())

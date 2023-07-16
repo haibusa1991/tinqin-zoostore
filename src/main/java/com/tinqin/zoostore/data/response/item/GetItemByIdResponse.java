@@ -15,4 +15,5 @@ public class GetItemByIdResponse {
     private String vendorId;
     private String[] multimedia;
     private String[] tags;
+    private Boolean isArchived;
 }

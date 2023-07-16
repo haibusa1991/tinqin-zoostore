@@ -1,6 +1,6 @@
 package com.tinqin.zoostore.controller;
 
-import com.tinqin.zoostore.exception.ItemNotFoundException;
+import com.tinqin.zoostore.exception.IdNotFoundException;
 import com.tinqin.zoostore.exception.VendorNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ItemControllerAdvise {
 
-    @ExceptionHandler({ItemNotFoundException.class,VendorNotFoundException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleItemNotFoundException(ItemNotFoundException e) {
+    @ExceptionHandler({IdNotFoundException.class,
+            VendorNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleItemNotFoundException(IdNotFoundException e) {
         return e.getMessage();
     }
 }

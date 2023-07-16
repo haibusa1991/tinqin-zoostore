@@ -61,6 +61,14 @@ public class EntityInitialization implements CommandLineRunner {
         Tag catFood = this.tagRepository.findTagByName("cat food");
         Tag treat = this.tagRepository.findTagByName("treat");
 
+        Item archived = Item.builder()
+                .title("Old dog food")
+                .description("This is an archived item")
+                .vendor(whiskas)
+                .build();
+        archived.setIsArchived(true);
+
+
         List<Item> items = List.of(Item.builder()
                         .title("Anti-Hairball")
                         .description("Reduces the risk of hairball forming.")
@@ -72,7 +80,8 @@ public class EntityInitialization implements CommandLineRunner {
                         .description("Crunchy treat with soft filling.")
                         .vendor(whiskas)
                         .tags(Set.of(catFood, treat))
-                        .build()
+                        .build(),
+                archived
         );
 
         this.itemRepository.saveAll(items);

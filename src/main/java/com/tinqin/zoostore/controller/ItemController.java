@@ -2,7 +2,7 @@ package com.tinqin.zoostore.controller;
 
 import com.tinqin.zoostore.data.request.item.*;
 import com.tinqin.zoostore.data.response.item.*;
-import com.tinqin.zoostore.exception.ItemNotFoundException;
+import com.tinqin.zoostore.exception.IdNotFoundException;
 import com.tinqin.zoostore.exception.VendorNotFoundException;
 import com.tinqin.zoostore.service.item.createItem.CreateItemService;
 import com.tinqin.zoostore.service.item.editItem.EditItemService;
@@ -27,16 +27,15 @@ public class ItemController {
     @ApiResponse(responseCode = "404", description = "no items found", content = @Content())
     @ApiResponse(responseCode = "200", description = "list of all items")
     @GetMapping()
-    public ResponseEntity<GetAllItemsResponse> getAllItems() {
-        return ResponseEntity.ok(this.getItemService.getAllItemsResponse());
+    public ResponseEntity<GetAllItemsResponse> getAllItems(@RequestParam(required = false,defaultValue = "false") Boolean includeArchived) {
+        return ResponseEntity.ok(this.getItemService.getAllItemsResponse(includeArchived));
     }
-
 
     @Operation(description = "Returns the requested item when requested by id.", summary = "Returns item by id.")
     @ApiResponse(responseCode = "200", description = "Returns item.")
     @ApiResponse(responseCode = "404", description = "No item found by the specified id.")
     @GetMapping(path = "/{itemId}")
-    public ResponseEntity<GetItemByIdResponse> getItemById(@PathVariable String itemId) throws ItemNotFoundException {
+    public ResponseEntity<GetItemByIdResponse> getItemById(@PathVariable String itemId) throws IdNotFoundException {
         return ResponseEntity.ok(this.getItemService.getItemById(itemId));
     }
 
@@ -49,30 +48,34 @@ public class ItemController {
     }
 
     @PatchMapping(path = "/{itemId}/title")
-    public ResponseEntity<EditItemTitleResponse> editItemTitle(@RequestBody EditItemTitleRequest request, @PathVariable String itemId) throws ItemNotFoundException {
+    public ResponseEntity<EditItemTitleResponse> editItemTitle(@RequestBody EditItemTitleRequest request, @PathVariable String itemId) throws IdNotFoundException {
         return ResponseEntity.ok(this.editItemService.editItemTitle(request, itemId));
     }
 
     @PatchMapping(path = "/{itemId}/description")
-    public ResponseEntity<EditItemDescriptionResponse> editItemDescription(@RequestBody EditItemDescriptionRequest request, @PathVariable String itemId) throws ItemNotFoundException {
+    public ResponseEntity<EditItemDescriptionResponse> editItemDescription(@RequestBody EditItemDescriptionRequest request, @PathVariable String itemId) throws IdNotFoundException {
         return ResponseEntity.ok(this.editItemService.editItemDescription(request, itemId));
     }
 
     @PatchMapping(path = "/{itemId}/vendor")
-    public ResponseEntity<EditItemVendorResponse> editItemVendor(@RequestBody EditItemVendorRequest request, @PathVariable String itemId) throws VendorNotFoundException, ItemNotFoundException {
+    public ResponseEntity<EditItemVendorResponse> editItemVendor(@RequestBody EditItemVendorRequest request, @PathVariable String itemId) throws VendorNotFoundException, IdNotFoundException {
         return ResponseEntity.ok(this.editItemService.editItemVendor(request, itemId));
     }
 
     @PatchMapping(path = "/{itemId}/multimedia")
-    public ResponseEntity<EditItemMultimediaResponse> editItemMultimedia(@RequestBody EditItemMultimediaRequest request, @PathVariable String itemId) throws ItemNotFoundException {
+    public ResponseEntity<EditItemMultimediaResponse> editItemMultimedia(@RequestBody EditItemMultimediaRequest request, @PathVariable String itemId) throws IdNotFoundException {
         return ResponseEntity.ok(this.editItemService.editItemMultimedia(request, itemId));
     }
 
     @PatchMapping(path = "/{itemId}/tags")
-    public ResponseEntity<EditItemTagsResponse> editItemTags(@RequestBody EditItemTagsRequest request, @PathVariable String itemId) throws ItemNotFoundException {
+    public ResponseEntity<EditItemTagsResponse> editItemTags(@RequestBody EditItemTagsRequest request, @PathVariable String itemId) throws IdNotFoundException {
         return ResponseEntity.ok(this.editItemService.editItemTags(request, itemId));
     }
 
-    //TODO INTEGRATION TESTS!
+    @PatchMapping(path = "/{itemId}")
+    public ResponseEntity<String> updateArchivedStatus (@RequestParam Boolean isArchived, @PathVariable String itemId) throws IdNotFoundException {
+        this.editItemService.updateArchivedStatus(isArchived,itemId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }

@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
-@Builder
 public class CreateTagRequest {
     private String name;
 }

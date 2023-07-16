@@ -3,7 +3,7 @@ package com.tinqin.zoostore.service.item.getItem;
 import com.tinqin.zoostore.data.entity.Item;
 import com.tinqin.zoostore.data.response.item.GetAllItemsResponse;
 import com.tinqin.zoostore.data.response.item.GetItemByIdResponse;
-import com.tinqin.zoostore.exception.ItemNotFoundException;
+import com.tinqin.zoostore.exception.IdNotFoundException;
 import com.tinqin.zoostore.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +20,40 @@ public class GetItemServiceImpl implements GetItemService {
     }
 
     @Override
-    public GetAllItemsResponse getAllItemsResponse() {
+    public GetAllItemsResponse getAllItemsResponse(Boolean includeArchived) {
+        if (includeArchived) {
+            return GetAllItemsResponse.builder()
+                    .items(this.itemRepository.findAll()
+                            .stream()
+                            .map(this::mapItemToGetItemByIdResponse)
+                            .collect(Collectors.toSet()))
+                    .build();
+        }
 
         return GetAllItemsResponse.builder()
-                .items(this.itemRepository.findAll().stream().map(this::mapItemToGetItemByIdResponse).collect(Collectors.toSet()))
+                .items(this.itemRepository
+                        .findAllByIsArchivedFalse()
+                        .stream()
+                        .map(this::mapItemToGetItemByIdResponse)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
     @Override
-    public GetItemByIdResponse getItemById(String itemId) throws ItemNotFoundException {
+    public GetItemByIdResponse getItemById(String itemId) throws IdNotFoundException {
 
         UUID id;
         try {
             id = UUID.fromString(itemId);
         } catch (IllegalArgumentException e) {
-            throw new ItemNotFoundException();
+            throw new IdNotFoundException();
         }
 
 
         Optional<Item> item = this.itemRepository.findById(id);
 
-        if(item.isEmpty()){
-            throw new ItemNotFoundException();
+        if (item.isEmpty()) {
+            throw new IdNotFoundException();
         }
 
         return this.mapItemToGetItemByIdResponse(item.get());
@@ -56,6 +68,7 @@ public class GetItemServiceImpl implements GetItemService {
                 .vendorId(item.getVendor().getId().toString())
                 .multimedia(item.getMultimediaLinks().stream().map(e -> e.getId().toString()).toArray(String[]::new))
                 .tags(item.getTags().stream().map(e -> e.getId().toString()).toArray(String[]::new))
+                .isArchived(item.getIsArchived())
                 .build();
     }
 }

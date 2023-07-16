@@ -1,51 +1,47 @@
 package com.tinqin.zoostore.controller;
 
+import com.tinqin.zoostore.data.request.vendor.CreateVendorRequest;
+import com.tinqin.zoostore.data.request.vendor.EditVendorRequest;
+import com.tinqin.zoostore.data.response.vendor.CreateVendorResponse;
+import com.tinqin.zoostore.data.response.vendor.EditVendorResponse;
+import com.tinqin.zoostore.data.response.vendor.GetAllVendorResponse;
+import com.tinqin.zoostore.data.response.vendor.GetVendorByIdResponse;
+import com.tinqin.zoostore.exception.IdNotFoundException;
+import com.tinqin.zoostore.exception.VendorNotFoundException;
+import com.tinqin.zoostore.service.vendor.createVendor.CreateVendorService;
+import com.tinqin.zoostore.service.vendor.editVendor.EditVendorService;
+import com.tinqin.zoostore.service.vendor.getVendor.GetVendorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/vendors")
+@RequiredArgsConstructor
 public class VendorController {
-//
-//    @GetMapping()
-//    public ResponseEntity<List<VendorDto>> getAllVendors() {
-//        //TODO returns all vendors or 404
-//
-//        return ResponseEntity.ok(List.of(
-//                new VendorDto("12345-mock", "vendor 1"),
-//                new VendorDto("67891-mock", "vendor 2")
-//        ));
-//    }
-//
-//    @GetMapping(path = "/{vendorId}")
-//    public ResponseEntity<VendorDto> getVendorById(@PathVariable String vendorId) {
-//        //TODO returns vendor by id or 404
-//
-//        return ResponseEntity.ok(new VendorDto(vendorId + "-mock", "vendor 1"));
-//    }
-//
-//    @PostMapping()
-//    public ResponseEntity<VendorDto> createNewVendor(@RequestBody CreateVendorDto dto) {
-//        //TODO returns persisted vendor
-//
-//        return new ResponseEntity<>(new VendorDto("123456-mock", dto.getName()), HttpStatus.CREATED);
-//    }
-//
-//    @PatchMapping(path = "/{vendorId}")
-//    public ResponseEntity<VendorDto> editVendor(@PathVariable String vendorId, @RequestBody EditVendorNameDto dto) {
-//        //TODO returns persisted vendor or appropriate error
-//
-//        return new ResponseEntity<>(new VendorDto(vendorId, dto.getName()), HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping(path = "/{vendorId}")
-//    public ResponseEntity<String> deleteVendor(@PathVariable String vendorId) {
-//        //TODO returns 204 or appropriate error. Should not delete vendor in use
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 
+    private final GetVendorService getVendorService;
+    private final CreateVendorService createVendorService;
+    private final EditVendorService editVendorService;
+
+    @GetMapping()
+    public ResponseEntity<GetAllVendorResponse> getAllVendors() {
+        return ResponseEntity.ok(this.getVendorService.getAllVendor());
+    }
+
+    @GetMapping(path = "/{vendorId}")
+    public ResponseEntity<GetVendorByIdResponse> getVendorById(@PathVariable String vendorId) throws IdNotFoundException {
+        return ResponseEntity.ok(this.getVendorService.getVendorById(vendorId));
+    }
+
+    @PostMapping()
+    public ResponseEntity<CreateVendorResponse> createNewVendor(@RequestBody CreateVendorRequest request) {
+        return new ResponseEntity<>(this.createVendorService.createVendor(request), HttpStatus.CREATED);
+    }
+
+    @PatchMapping(path = "/{vendorId}")
+    public ResponseEntity<EditVendorResponse> editVendor(@PathVariable String vendorId, @RequestBody EditVendorRequest request) throws VendorNotFoundException, IdNotFoundException {
+        return new ResponseEntity<>(this.editVendorService.editVendor(request,vendorId), HttpStatus.OK);
+    }
 }
