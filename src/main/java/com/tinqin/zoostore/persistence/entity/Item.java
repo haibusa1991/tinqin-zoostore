@@ -15,12 +15,12 @@ import java.util.UUID;
 public class Item {
 
     @Builder
-    public Item(String title, String description, Vendor vendor, Set<Tag> tags, List<Multimedia> multimediaLinks) {
+    public Item(String title, String description, Vendor vendor, Set<Tag> tags, Set<Multimedia> multimedia) {
         this.title = title;
         this.description = description;
         this.vendor = vendor;
         this.tags = tags;
-        this.multimediaLinks = multimediaLinks;
+        this.multimedia = multimedia;
         this.isArchived = false;
     }
 
@@ -41,7 +41,7 @@ public class Item {
     private Set<Tag> tags;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
-    private List<Multimedia> multimediaLinks;
+    private Set<Multimedia> multimedia;
 
     private Boolean isArchived;
 

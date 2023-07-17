@@ -1,7 +1,6 @@
 package com.tinqin.zoostore.rest;
 
-import com.tinqin.zoostore.core.exception.InvalidUuidException;
-import com.tinqin.zoostore.core.exception.VendorNotFoundException;
+import com.tinqin.zoostore.core.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,7 +11,10 @@ public class RestControllerAdviceExceptionHandlerConfiguration {
 
     @ExceptionHandler({
             VendorNotFoundException.class,
-            InvalidUuidException.class
+            InvalidUuidException.class,
+            TagNotFoundException.class,
+            MultimediaNotFoundException.class,
+            ItemNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleItemNotFoundException(Exception e) {

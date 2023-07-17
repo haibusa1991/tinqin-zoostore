@@ -1,8 +1,8 @@
 package com.tinqin.zoostore.core.notRefactored.item.createItem;
 
-import com.tinqin.zoostore.api.request.item.CreateNewItemRequest;
-import com.tinqin.zoostore.api.response.item.CreateNewItemResponse;
+import com.tinqin.zoostore.api.operations.item.createItem.CreateItemRequest;
+import com.tinqin.zoostore.api.operations.item.createItem.CreateItemResponse;
 import com.tinqin.zoostore.api.base.Processor;
 
-public interface CreateItemService extends Processor<CreateNewItemResponse, CreateNewItemRequest> {
+public interface CreateItemService extends Processor<CreateItemResponse, CreateItemRequest> {
 }

@@ -13,6 +13,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class TinqinZoostoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(TinqinZoostoreApplication.class, args);
-
     }
 }

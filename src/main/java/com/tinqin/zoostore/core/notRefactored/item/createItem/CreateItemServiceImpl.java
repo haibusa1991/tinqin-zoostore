@@ -7,8 +7,8 @@
 //import com.tinqin.zoostore.persistence.entity.Multimedia;
 //import com.tinqin.zoostore.persistence.entity.Tag;
 //import com.tinqin.zoostore.persistence.entity.Vendor;
-//import com.tinqin.zoostore.api.request.item.CreateNewItemRequest;
-//import com.tinqin.zoostore.api.response.item.CreateNewItemResponse;
+//import com.tinqin.zoostore.api.operations.item.createItem.CreateNewItemRequest;
+//import com.tinqin.zoostore.api.operations.item.createItem.CreateNewItemResponse;
 //import com.tinqin.zoostore.core.exception.VendorNotFoundException;
 //import com.tinqin.zoostore.persistence.repository.ItemRepository;
 //import lombok.RequiredArgsConstructor;
