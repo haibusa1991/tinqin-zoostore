@@ -1,0 +1,11 @@
+package com.tinqin.zoostore.api.request.multimedia;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter(AccessLevel.PRIVATE)
+public class CreateMultimediaRequest {
+    private String url;
+}
