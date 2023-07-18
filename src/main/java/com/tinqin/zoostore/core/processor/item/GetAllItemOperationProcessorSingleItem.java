@@ -1,21 +1,19 @@
-package com.tinqin.zoostore.api.operations.item.editItemDescription;
+package com.tinqin.zoostore.core.processor.item;
 
-import com.tinqin.zoostore.api.base.ProcessorResult;
 import lombok.*;
 
 import java.util.UUID;
-
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EditItemDescriptionResponse implements ProcessorResult {
-
+public class GetAllItemOperationProcessorSingleItem {
     private UUID id;
     private String title;
     private String description;
     private UUID vendorId;
     private UUID[] multimedia;
     private UUID[] tags;
+    private Boolean isArchived;
 }

@@ -19,7 +19,7 @@ public class CreateTagOperationProcessor implements CreateTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public CreateTagResponse process(CreateTagRequest request) throws InvalidUuidException, VendorNotFoundException, MultimediaNotFoundException {
+    public CreateTagResponse process(CreateTagRequest request) {
         Tag persisted = this.tagRepository.save(Tag.builder().name(request.getName()).build());
 
         return CreateTagResponse.builder()

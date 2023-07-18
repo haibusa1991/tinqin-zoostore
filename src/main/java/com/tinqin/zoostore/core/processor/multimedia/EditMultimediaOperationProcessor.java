@@ -4,7 +4,6 @@ import com.tinqin.zoostore.api.operations.multimedia.editMultimedia.EditMultimed
 import com.tinqin.zoostore.api.operations.multimedia.editMultimedia.EditMultimediaRequest;
 import com.tinqin.zoostore.api.operations.multimedia.editMultimedia.EditMultimediaResponse;
 import com.tinqin.zoostore.core.UuidValidator;
-import com.tinqin.zoostore.core.exception.IdNotFoundException;
 import com.tinqin.zoostore.core.exception.InvalidUuidException;
 import com.tinqin.zoostore.core.exception.VendorNotFoundException;
 import com.tinqin.zoostore.persistence.entity.Multimedia;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +19,7 @@ public class EditMultimediaOperationProcessor implements EditMultimediaOperation
     private final MultimediaRepository multimediaRepository;
 
     @Override
-    public EditMultimediaResponse process(EditMultimediaRequest request) throws InvalidUuidException, VendorNotFoundException {
+    public EditMultimediaResponse process(EditMultimediaRequest request)  {
         Optional<Multimedia> multimediaOptional = this.multimediaRepository.findById(UuidValidator.getUuid(request.getId()));
 
         if (multimediaOptional.isEmpty()) {

@@ -19,7 +19,7 @@ public class EditVendorOperationProcessor implements EditVendorOperation {
     private final VendorRepository vendorRepository;
 
     @Override
-    public EditVendorResponse process(EditVendorRequest request) throws VendorNotFoundException, InvalidUuidException {
+    public EditVendorResponse process(EditVendorRequest request) {
 
         Optional<Vendor> vendorOptional = this.vendorRepository.findById(UuidValidator.getUuid(request.getId()));
 

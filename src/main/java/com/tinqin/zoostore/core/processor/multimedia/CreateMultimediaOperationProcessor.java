@@ -16,7 +16,7 @@ public class CreateMultimediaOperationProcessor implements CreateMultimediaOpera
     private final MultimediaRepository multimediaRepository;
 
     @Override
-    public CreateMultimediaResponse process(CreateMultimediaRequest request) throws InvalidUuidException, VendorNotFoundException {
+    public CreateMultimediaResponse process(CreateMultimediaRequest request){
         Multimedia persisted = this.multimediaRepository.save(Multimedia.builder().url(request.getUrl()).build());
 
         return CreateMultimediaResponse.builder()

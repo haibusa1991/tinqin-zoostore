@@ -13,13 +13,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class GetAllTagOperationProcessor implements GetAllTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public GetAllTagResponse process(GetAllTagRequest request) throws InvalidUuidException, VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
+    public GetAllTagResponse process(GetAllTagRequest request) {
         List<GetAllTagOperationProcessorSingleItem> allTags = this.tagRepository
                 .findAll()
                 .stream()

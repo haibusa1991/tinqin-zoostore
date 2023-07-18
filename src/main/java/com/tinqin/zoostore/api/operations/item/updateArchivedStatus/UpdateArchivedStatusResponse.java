@@ -1,4 +1,4 @@
-package com.tinqin.zoostore.api.operations.item.editItemDescription;
+package com.tinqin.zoostore.api.operations.item.updateArchivedStatus;
 
 import com.tinqin.zoostore.api.base.ProcessorResult;
 import lombok.*;
@@ -7,10 +7,10 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class EditItemDescriptionResponse implements ProcessorResult {
+@NoArgsConstructor
+@Builder
+public class UpdateArchivedStatusResponse implements ProcessorResult {
 
     private UUID id;
     private String title;
@@ -18,4 +18,5 @@ public class EditItemDescriptionResponse implements ProcessorResult {
     private UUID vendorId;
     private UUID[] multimedia;
     private UUID[] tags;
+    private Boolean isArchived;
 }

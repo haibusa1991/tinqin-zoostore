@@ -30,7 +30,7 @@ public class CreateItemOperationProcessor implements CreateItemOperation {
     private final ItemRepository itemRepository;
 
     @Override
-    public CreateItemResponse process(CreateItemRequest request) throws InvalidUuidException, VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
+    public CreateItemResponse process(CreateItemRequest request) {
         Optional<Vendor> vendorOptional = this.vendorRepository.findById(UuidValidator.getUuid(request.getVendorId()));
 
         if (vendorOptional.isEmpty()) {
@@ -39,7 +39,7 @@ public class CreateItemOperationProcessor implements CreateItemOperation {
 
         Vendor vendor = vendorOptional.get();
 
-        Set<UUID> multimediaUuids = this.parseUuid(request.getMultimedia());
+        Set<UUID> multimediaUuids = UuidValidator.getUuid(request.getMultimedia());
         for (UUID multimediaUuid : multimediaUuids) {
             if(!this.multimediaRepository.existsById(multimediaUuid)){
                 throw new MultimediaNotFoundException(multimediaUuid.toString());
@@ -47,7 +47,7 @@ public class CreateItemOperationProcessor implements CreateItemOperation {
         }
         Set<Multimedia> multimedia = this.multimediaRepository.findAllByIdIn(multimediaUuids);
 
-        Set<UUID> tagUuids = this.parseUuid(request.getTags());
+        Set<UUID> tagUuids = UuidValidator.getUuid(request.getTags());
         for (UUID tagUuid : tagUuids) {
             if(!this.tagRepository.existsById(tagUuid)){
                 throw new TagNotFoundException(tagUuid.toString());
@@ -71,14 +71,5 @@ public class CreateItemOperationProcessor implements CreateItemOperation {
                 .multimedia(persisted.getMultimedia().stream().map(Multimedia::getId).toArray(UUID[]::new))
                 .tags(persisted.getTags().stream().map(Tag::getId).toArray(UUID[]::new))
                 .build();
-    }
-
-
-    private Set<UUID> parseUuid(String[] uuids) throws InvalidUuidException {
-        Set<UUID> uuidSet = new HashSet<>();
-        for (String uuid : uuids) {
-            uuidSet.add(UuidValidator.getUuid(uuid));
-        }
-        return uuidSet;
     }
 }

@@ -18,7 +18,7 @@ public class GetAllMultimediaOperationProcessor implements GetAllMultimediaOpera
     private final MultimediaRepository multimediaRepository;
 
     @Override
-    public GetAllMultimediaResponse process(GetAllMultimediaRequest request) throws InvalidUuidException, VendorNotFoundException {
+    public GetAllMultimediaResponse process(GetAllMultimediaRequest request) {
 
             return GetAllMultimediaResponse.builder()
                     .multimedia(this.multimediaRepository

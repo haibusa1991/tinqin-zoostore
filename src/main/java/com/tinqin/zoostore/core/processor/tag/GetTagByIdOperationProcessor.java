@@ -22,11 +22,11 @@ public class GetTagByIdOperationProcessor implements GetTagByIdOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public GetTagByIdResponse process(GetTagByIdRequest request) throws InvalidUuidException, VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
+    public GetTagByIdResponse process(GetTagByIdRequest request) {
 
         Optional<Tag> tagOptional = this.tagRepository.findById(UuidValidator.getUuid(request.getId()));
 
-        if(tagOptional.isEmpty()){
+        if (tagOptional.isEmpty()) {
             throw new TagNotFoundException(request.getId());
         }
 

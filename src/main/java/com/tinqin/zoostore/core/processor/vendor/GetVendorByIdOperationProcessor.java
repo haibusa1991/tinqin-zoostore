@@ -20,7 +20,7 @@ public class GetVendorByIdOperationProcessor implements GetVendorByIdOperation {
     private final VendorRepository vendorRepository;
 
     @Override
-    public GetVendorByIdResponse process(GetVendorByIdRequest request) throws VendorNotFoundException, InvalidUuidException {
+    public GetVendorByIdResponse process(GetVendorByIdRequest request) {
         return this.mapVendorToGetVendorByIdResponse(this.getVendorAndValidate(request.getId()));
     }
 

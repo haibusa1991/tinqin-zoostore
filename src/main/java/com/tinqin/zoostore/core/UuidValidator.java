@@ -2,6 +2,8 @@ package com.tinqin.zoostore.core;
 
 import com.tinqin.zoostore.core.exception.InvalidUuidException;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class UuidValidator {
@@ -11,5 +13,13 @@ public class UuidValidator {
         } catch (IllegalArgumentException e) {
             throw new InvalidUuidException(uuid);
         }
+    }
+
+    public static Set<UUID> getUuid(String[] uuids) throws InvalidUuidException {
+        Set<UUID> uuidSet = new HashSet<>();
+        for (String uuid : uuids) {
+            uuidSet.add(UuidValidator.getUuid(uuid));
+        }
+        return uuidSet;
     }
 }

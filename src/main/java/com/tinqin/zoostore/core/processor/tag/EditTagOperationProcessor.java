@@ -12,16 +12,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class EditTagOperationProcessor implements EditTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public EditTagResponse process(EditTagRequest request) throws InvalidUuidException, VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
+    public EditTagResponse process(EditTagRequest request) {
         Optional<Tag> tagOptional = this.tagRepository.findById(UuidValidator.getUuid(request.getId()));
 
-        if(tagOptional.isEmpty()){
+        if (tagOptional.isEmpty()) {
             throw new TagNotFoundException(request.getId());
         }
 
@@ -32,7 +33,7 @@ public class EditTagOperationProcessor implements EditTagOperation {
         Tag persisted = this.tagRepository.save(tag);
 
         return EditTagResponse.builder()
-                .id(persisted.getId().toString())
+                .id(persisted.getId())
                 .name(persisted.getName())
                 .build();
     }
