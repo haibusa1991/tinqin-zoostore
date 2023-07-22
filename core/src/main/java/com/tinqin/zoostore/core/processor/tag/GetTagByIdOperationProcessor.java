@@ -18,15 +18,9 @@ public class GetTagByIdOperationProcessor implements GetTagByIdOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public GetTagByIdResult process(GetTagByIdInput request) {
+    public GetTagByIdResult process(GetTagByIdInput input) {
 
-        Optional<Tag> tagOptional = this.tagRepository.findById(UuidValidator.getUuid(request.getId()));
-
-        if (tagOptional.isEmpty()) {
-            throw new TagNotFoundException(request.getId());
-        }
-
-        Tag tag = tagOptional.get();
+        Tag tag = this.tagRepository.findById(input.getId()).orElseThrow(() -> new TagNotFoundException(input.getId()));
 
         return GetTagByIdResult.builder()
                 .id(tag.getId())

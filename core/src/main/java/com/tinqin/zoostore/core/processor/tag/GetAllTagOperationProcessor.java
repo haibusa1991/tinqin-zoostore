@@ -17,7 +17,7 @@ public class GetAllTagOperationProcessor implements GetAllTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public GetAllTagResult process(GetAllTagInput request) {
+    public GetAllTagResult process(GetAllTagInput input) {
         List<GetAllTagOperationProcessorSingleItem> allTags = this.tagRepository
                 .findAll()
                 .stream()

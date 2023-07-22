@@ -18,17 +18,10 @@ public class EditVendorOperationProcessor implements EditVendorOperation {
     private final VendorRepository vendorRepository;
 
     @Override
-    public EditVendorResponseResult process(EditVendorInput request) {
+    public EditVendorResponseResult process(EditVendorInput input) {
+        Vendor vendor = this.vendorRepository.findById(input.getId()).orElseThrow(()->new VendorNotFoundException(input.getId()));
 
-        Optional<Vendor> vendorOptional = this.vendorRepository.findById(UuidValidator.getUuid(request.getId()));
-
-        if (vendorOptional.isEmpty()) {
-            throw new VendorNotFoundException(request.getId());
-        }
-
-        Vendor vendor = vendorOptional.get();
-
-        vendor.setName(request.getName());
+        vendor.setName(input.getName());
         Vendor persisted = this.vendorRepository.save(vendor);
 
         return EditVendorResponseResult.builder()

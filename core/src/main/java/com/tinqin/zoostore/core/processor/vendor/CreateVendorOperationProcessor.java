@@ -14,11 +14,11 @@ public class CreateVendorOperationProcessor implements CreateVendorOperation {
     private final VendorRepository vendorRepository;
 
     @Override
-    public CreateVendorResult process(CreateVendorInput request) {
-        Vendor persisted = this.vendorRepository.save(Vendor.builder().name(request.getName()).build());
+    public CreateVendorResult process(CreateVendorInput input) {
+        Vendor persisted = this.vendorRepository.save(Vendor.builder().name(input.getName()).build());
 
         return CreateVendorResult.builder()
-                .id(persisted.getId().toString())
+                .id(persisted.getId())
                 .name(persisted.getName())
                 .build();
     

@@ -5,6 +5,7 @@ import com.tinqin.zoostore.api.operations.item.editItemTag.EditItemTagInput;
 import com.tinqin.zoostore.api.operations.item.editItemTag.EditItemTagResult;
 import com.tinqin.zoostore.core.UuidValidator;
 import com.tinqin.zoostore.core.exception.*;
+import com.tinqin.zoostore.core.processor.utils.IdMismatchFinder;
 import com.tinqin.zoostore.persistence.entity.Item;
 import com.tinqin.zoostore.persistence.entity.Multimedia;
 import com.tinqin.zoostore.persistence.entity.Tag;
@@ -24,22 +25,14 @@ public class EditItemTagOperationProcessor implements EditItemTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public EditItemTagResult process(EditItemTagInput request) {
+    public EditItemTagResult process(EditItemTagInput input) {
 
-        Set<UUID> tagUuids = UuidValidator.getUuid(request.getTagIds());
-        for (UUID tagUuid : tagUuids) {
-            if (!this.tagRepository.existsById(tagUuid)) {
-                throw new TagNotFoundException(tagUuid.toString());
-            }
+        Item item = this.itemRepository.findById(input.getId()).orElseThrow(() -> new ItemNotFoundException(input.getId()));
+
+        Set<Tag> tags = this.tagRepository.findAllByIdIn(input.getTagIds());
+        if (tags.size() != input.getTagIds().size()) {
+            throw new TagNotFoundException(IdMismatchFinder.find(tags, input.getTagIds()));
         }
-
-        Set<Tag> tags = this.tagRepository.findAllByIdIn(tagUuids);
-
-        Optional<Item> itemOptional = this.itemRepository.findById(UuidValidator.getUuid(request.getId()));
-        if (itemOptional.isEmpty()) {
-            throw new ItemNotFoundException(request.getId());
-        }
-        Item item = itemOptional.get();
 
         item.setTags(tags);
         Item persisted = this.itemRepository.save(item);

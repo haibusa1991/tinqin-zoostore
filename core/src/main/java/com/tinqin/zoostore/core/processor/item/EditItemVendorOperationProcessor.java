@@ -24,18 +24,14 @@ public class EditItemVendorOperationProcessor implements EditItemVendorOperation
     private final ItemRepository itemRepository;
 
     @Override
-    public EditItemVendorResult process(EditItemVendorInput request) {
-        Optional<Vendor> vendorOptional = this.vendorRepository.findById(UuidValidator.getUuid(request.getId()));
-        if (vendorOptional.isEmpty()) {
-            throw new VendorNotFoundException(request.getId());
-        }
-        Vendor vendor = vendorOptional.get();
+    public EditItemVendorResult process(EditItemVendorInput input) {
+        Item item = this.itemRepository
+                .findById(input.getId())
+                .orElseThrow(() -> new ItemNotFoundException(input.getId()));
 
-        Optional<Item> itemOptional = this.itemRepository.findById(UuidValidator.getUuid(request.getId()));
-        if (itemOptional.isEmpty()) {
-            throw new ItemNotFoundException(request.getId());
-        }
-        Item item = itemOptional.get();
+        Vendor vendor = this.vendorRepository
+                .findById(input.getVendorId())
+                .orElseThrow(() -> new VendorNotFoundException(input.getVendorId()));
 
         item.setVendor(vendor);
 

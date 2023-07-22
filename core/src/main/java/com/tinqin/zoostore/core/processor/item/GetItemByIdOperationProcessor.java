@@ -21,12 +21,9 @@ public class GetItemByIdOperationProcessor implements GetItemByIdOperation {
     private final ItemRepository itemRepository;
 
     @Override
-    public GetItemByIdResult process(GetItemByIdInput request) {
-        Optional<Item> itemOptional = this.itemRepository.findById(UuidValidator.getUuid(request.getId()));
-        if (itemOptional.isEmpty()) {
-            throw new ItemNotFoundException(request.getId());
-        }
-        Item item = itemOptional.get();
+    public GetItemByIdResult process(GetItemByIdInput input) {
+
+        Item item = this.itemRepository.findById(input.getId()).orElseThrow(() -> new ItemNotFoundException(input.getId()));
 
         return GetItemByIdResult.builder()
                 .id(item.getId())

@@ -12,11 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Multimedia {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class Multimedia extends BaseEntity{
 
     @Column(nullable = false)
     private String url;

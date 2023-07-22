@@ -18,16 +18,10 @@ public class EditTagOperationProcessor implements EditTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public EditTagResult process(EditTagInput request) {
-        Optional<Tag> tagOptional = this.tagRepository.findById(UuidValidator.getUuid(request.getId()));
+    public EditTagResult process(EditTagInput input) {
+        Tag tag = this.tagRepository.findById(input.getId()).orElseThrow(()->new TagNotFoundException(input.getId()));
 
-        if (tagOptional.isEmpty()) {
-            throw new TagNotFoundException(request.getId());
-        }
-
-        Tag tag = tagOptional.get();
-
-        tag.setName(request.getName());
+        tag.setName(input.getName());
 
         Tag persisted = this.tagRepository.save(tag);
 

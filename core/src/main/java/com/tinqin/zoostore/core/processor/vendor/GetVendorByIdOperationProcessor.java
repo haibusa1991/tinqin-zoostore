@@ -19,29 +19,12 @@ public class GetVendorByIdOperationProcessor implements GetVendorByIdOperation {
     private final VendorRepository vendorRepository;
 
     @Override
-    public GetVendorByIdResult process(GetVendorByIdInput request) {
-        return this.mapVendorToGetVendorByIdResponse(this.getVendorAndValidate(request.getId()));
-    }
+    public GetVendorByIdResult process(GetVendorByIdInput input) {
+        Vendor vendor = this.vendorRepository.findById(input.getId()).orElseThrow(() -> new VendorNotFoundException(input.getId()));
 
-    private GetVendorByIdResult mapVendorToGetVendorByIdResponse(Vendor vendor) {
         return GetVendorByIdResult.builder()
-                .id(vendor.getId().toString())
+                .id(vendor.getId())
                 .name(vendor.getName())
                 .build();
     }
-
-    private Vendor getVendorAndValidate(String vendorId) throws VendorNotFoundException {
-        UUID vendorUuid = UuidValidator.getUuid(vendorId);
-
-        Optional<Vendor> vendorOptional = this.vendorRepository
-                .findById(vendorUuid);
-
-        if (vendorOptional.isEmpty()) {
-            throw new VendorNotFoundException(vendorId);
-        }
-
-        return vendorOptional.get();
-    }
-
-
 }

@@ -18,14 +18,8 @@ public class GetMultimediaByIdOperationProcessor implements GetMultimediaByIdOpe
     private final MultimediaRepository multimediaRepository;
 
     @Override
-    public GetMultimediaByIdResult process(GetMultimediaByIdInput request) {
-        Optional<Multimedia> multimediaOptional = this.multimediaRepository.findById(UuidValidator.getUuid(request.getId()));
-
-        if (multimediaOptional.isEmpty()) {
-            throw new MultimediaNotFoundException(request.getId());
-        }
-
-        Multimedia multimedia = multimediaOptional.get();
+    public GetMultimediaByIdResult process(GetMultimediaByIdInput input) {
+        Multimedia multimedia = this.multimediaRepository.findById(input.getId()).orElseThrow(()->new MultimediaNotFoundException(input.getId()));
 
         return GetMultimediaByIdResult.builder()
                 .id(multimedia.getId())

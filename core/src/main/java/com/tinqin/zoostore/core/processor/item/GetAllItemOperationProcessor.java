@@ -11,6 +11,7 @@ import com.tinqin.zoostore.persistence.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,21 +21,15 @@ public class GetAllItemOperationProcessor implements GetAllItemOperation {
     private final ItemRepository itemRepository;
 
     @Override
-    public GetAllItemsResult process(GetAllItemInput request) {
-        if (request.getShouldIncludeArchived()) {
-            return GetAllItemsResult.builder()
-                    .items(this.itemRepository
-                            .findAll()
-                            .stream()
-                            .map(this::mapItemToGetAllItemOperationProcessorSingleItem)
-                            .collect(Collectors.toSet()))
-                    .build();
+    public GetAllItemsResult process(GetAllItemInput input) {
+        Set<Item> result = this.itemRepository.findAllByIsArchivedEquals(false);
+
+        if (input.getShouldIncludeArchived()) {
+            result.addAll(this.itemRepository.findAllByIsArchivedEquals(true));
         }
 
         return GetAllItemsResult.builder()
-                .items(this.itemRepository
-                        .findAllByIsArchivedFalse()
-                        .stream()
+                .items(result.stream()
                         .map(this::mapItemToGetAllItemOperationProcessorSingleItem)
                         .collect(Collectors.toSet()))
                 .build();

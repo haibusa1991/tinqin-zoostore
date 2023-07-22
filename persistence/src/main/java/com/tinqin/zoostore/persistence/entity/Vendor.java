@@ -13,11 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Vendor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class Vendor extends BaseEntity{
 
     @Column(nullable = false)
     private String name;

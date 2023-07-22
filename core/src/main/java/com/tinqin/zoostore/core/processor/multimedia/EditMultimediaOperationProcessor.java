@@ -4,6 +4,7 @@ import com.tinqin.zoostore.api.operations.multimedia.editMultimedia.EditMultimed
 import com.tinqin.zoostore.api.operations.multimedia.editMultimedia.EditMultimediaInput;
 import com.tinqin.zoostore.api.operations.multimedia.editMultimedia.EditMultimediaResult;
 import com.tinqin.zoostore.core.UuidValidator;
+import com.tinqin.zoostore.core.exception.MultimediaNotFoundException;
 import com.tinqin.zoostore.core.exception.VendorNotFoundException;
 import com.tinqin.zoostore.persistence.entity.Multimedia;
 import com.tinqin.zoostore.persistence.repository.MultimediaRepository;
@@ -18,15 +19,9 @@ public class EditMultimediaOperationProcessor implements EditMultimediaOperation
     private final MultimediaRepository multimediaRepository;
 
     @Override
-    public EditMultimediaResult process(EditMultimediaInput request)  {
-        Optional<Multimedia> multimediaOptional = this.multimediaRepository.findById(UuidValidator.getUuid(request.getId()));
-
-        if (multimediaOptional.isEmpty()) {
-            throw new VendorNotFoundException(request.getId());
-        }
-
-        Multimedia multimedia = multimediaOptional.get();
-        multimedia.setUrl(request.getUrl());
+    public EditMultimediaResult process(EditMultimediaInput input)  {
+        Multimedia multimedia = this.multimediaRepository.findById(input.getId()).orElseThrow(() -> new MultimediaNotFoundException(input.getId()));
+        multimedia.setUrl(input.getUrl());
 
         Multimedia persisted = this.multimediaRepository.save(multimedia);
 

@@ -22,16 +22,10 @@ public class UpdateArchivedStatusOperationProcessor implements UpdateArchivedSta
     private final ItemRepository itemRepository;
 
     @Override
-    public UpdateArchivedStatusResult process(UpdateArchivedStatusInput request) {
-        Optional<Item> itemOptional = this.itemRepository.findById(UuidValidator.getUuid(request.getId()));
+    public UpdateArchivedStatusResult process(UpdateArchivedStatusInput input) {
+        Item item = this.itemRepository.findById(input.getId()).orElseThrow(() -> new ItemNotFoundException(input.getId()));
 
-        if (itemOptional.isEmpty()) {
-            throw new ItemNotFoundException(request.getId());
-        }
-
-        Item item = itemOptional.get();
-
-        item.setIsArchived(request.getArchivedStatus());
+        item.setIsArchived(input.getArchivedStatus());
 
         Item persisted = this.itemRepository.save(item);
 

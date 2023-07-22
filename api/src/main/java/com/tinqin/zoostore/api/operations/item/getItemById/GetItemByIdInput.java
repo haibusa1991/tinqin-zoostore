@@ -6,9 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Builder
 public class GetItemByIdInput implements ProcessorInput {
-    private String id;
+    @org.hibernate.validator.constraints.UUID
+    private UUID id;
 }

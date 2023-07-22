@@ -3,8 +3,8 @@ package com.tinqin.zoostore.core.processor.item;
 import com.tinqin.zoostore.api.operations.item.editItemMultimedia.EditItemMultimediaOperation;
 import com.tinqin.zoostore.api.operations.item.editItemMultimedia.EditItemMultimediaInput;
 import com.tinqin.zoostore.api.operations.item.editItemMultimedia.EditItemMultimediaResult;
-import com.tinqin.zoostore.core.UuidValidator;
 import com.tinqin.zoostore.core.exception.*;
+import com.tinqin.zoostore.core.processor.utils.IdMismatchFinder;
 import com.tinqin.zoostore.persistence.entity.Item;
 import com.tinqin.zoostore.persistence.entity.Multimedia;
 import com.tinqin.zoostore.persistence.entity.Tag;
@@ -13,7 +13,6 @@ import com.tinqin.zoostore.persistence.repository.MultimediaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,22 +23,14 @@ public class EditItemMultimediaOperationProcessor implements EditItemMultimediaO
     private final ItemRepository itemRepository;
 
     @Override
-    public EditItemMultimediaResult process(EditItemMultimediaInput request) {
+    public EditItemMultimediaResult process(EditItemMultimediaInput input) {
 
-        Set<UUID> multimediaUuids = UuidValidator.getUuid(request.getMultimediaIds());
-        for (UUID multimediaUuid : multimediaUuids) {
-            if (!this.multimediaRepository.existsById(multimediaUuid)) {
-                throw new MultimediaNotFoundException(multimediaUuid.toString());
-            }
+        Item item = this.itemRepository.findById(input.getId()).orElseThrow(() -> new ItemNotFoundException(input.getId()));
+
+        Set<Multimedia> multimedia = this.multimediaRepository.findAllByIdIn(input.getMultimediaIds());
+        if (multimedia.size() != input.getMultimediaIds().size()) {
+            throw new MultimediaNotFoundException(IdMismatchFinder.find(multimedia, input.getMultimediaIds()));
         }
-
-        Set<Multimedia> multimedia = this.multimediaRepository.findAllByIdIn(multimediaUuids);
-
-        Optional<Item> itemOptional = this.itemRepository.findById(UuidValidator.getUuid(request.getId()));
-        if (itemOptional.isEmpty()) {
-            throw new ItemNotFoundException(request.getId());
-        }
-        Item item = itemOptional.get();
 
         item.setMultimedia(multimedia);
         Item persisted = this.itemRepository.save(item);

@@ -16,13 +16,16 @@ import com.tinqin.zoostore.core.exception.TagNotFoundException;
 import com.tinqin.zoostore.core.exception.VendorNotFoundException;
 import com.tinqin.zoostore.api.operations.vendor.getVendorById.GetVendorByIdOperation;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/vendors")
 @RequiredArgsConstructor
+@Validated
 public class VendorController {
 
     private final GetVendorByIdOperation getVendorById;
@@ -31,22 +34,23 @@ public class VendorController {
     private final EditVendorOperation editVendor;
 
     @GetMapping()
-    public ResponseEntity<GetAllVendorResult> getAllVendors() throws Exception {
+    public ResponseEntity<GetAllVendorResult> getAllVendors() {
         return ResponseEntity.ok(this.getAllVendor.process(new GetAllVendorInput()));
     }
 
     @GetMapping(path = "/{vendorId}")
-    public ResponseEntity<GetVendorByIdResult> getVendorById(@PathVariable String vendorId) throws VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
-        return ResponseEntity.ok(this.getVendorById.process(new GetVendorByIdInput(vendorId)));
+    public ResponseEntity<GetVendorByIdResult> getVendorById(@PathVariable @UUID String vendorId) {
+        return ResponseEntity.ok(this.getVendorById.process(new GetVendorByIdInput(java.util.UUID.fromString(vendorId))));
     }
 
     @PostMapping
-    public ResponseEntity<CreateVendorResult> createVendorRequest(@RequestBody CreateVendorInput request) throws VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
+    public ResponseEntity<CreateVendorResult> createVendorRequest(@RequestBody CreateVendorInput request) {
         return new ResponseEntity<>(this.createVendor.process(request), HttpStatus.CREATED);
     }
 
-    @PatchMapping
-    public ResponseEntity<EditVendorResponseResult> editVendor(@RequestBody EditVendorInput request) throws VendorNotFoundException, MultimediaNotFoundException, TagNotFoundException {
-        return ResponseEntity.ok(this.editVendor.process(request));
+    @PatchMapping(path = "/{vendorId}")
+    public ResponseEntity<EditVendorResponseResult> editVendor(@PathVariable @UUID String vendorId, @RequestBody EditVendorInput input) {
+        input.setId(java.util.UUID.fromString(vendorId));
+        return ResponseEntity.ok(this.editVendor.process(input));
     }
 }

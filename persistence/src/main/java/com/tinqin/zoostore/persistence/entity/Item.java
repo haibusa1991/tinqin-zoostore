@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Item {
+public class Item extends BaseEntity {
 
     @Builder
     public Item(String title, String description, Vendor vendor, Set<Tag> tags, Set<Multimedia> multimedia) {
@@ -23,10 +23,6 @@ public class Item {
         this.multimedia = multimedia;
         this.isArchived = false;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
 
     @Column(unique = true, nullable = false)
     private String title;

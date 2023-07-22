@@ -14,13 +14,16 @@ import com.tinqin.zoostore.api.operations.multimedia.getMultimediaById.GetMultim
 import com.tinqin.zoostore.api.operations.multimedia.getMultimediaById.GetMultimediaByIdResult;
 import com.tinqin.zoostore.core.exception.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/multimedia")
 @RequiredArgsConstructor
+@Validated
 public class MultimediaController {
     private final CreateMultimediaOperation createMultimedia;
     private final EditMultimediaOperation editMultimedia;
@@ -34,8 +37,8 @@ public class MultimediaController {
     }
 
     @GetMapping(path = "/{multimediaId}")
-    public ResponseEntity<GetMultimediaByIdResult> getMultimediaById(@PathVariable String multimediaId) {
-        return ResponseEntity.ok(this.getMultimediaById.process(GetMultimediaByIdInput.builder().id(multimediaId).build()));
+    public ResponseEntity<GetMultimediaByIdResult> getMultimediaById(@PathVariable @UUID String multimediaId) {
+        return ResponseEntity.ok(this.getMultimediaById.process(GetMultimediaByIdInput.builder().id(java.util.UUID.fromString(multimediaId)).build()));
     }
 
     @PostMapping()

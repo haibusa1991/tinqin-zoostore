@@ -32,13 +32,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/items")
 @RequiredArgsConstructor
+@Validated
 public class ItemController {
     private final CreateItemOperation createItem;
     private final GetAllItemOperation getAllItem;
@@ -62,8 +65,8 @@ public class ItemController {
     @ApiResponse(responseCode = "200", description = "Returns item.")
     @ApiResponse(responseCode = "404", description = "No item found by the specified id.")
     @GetMapping(path = "/{itemId}")
-    public ResponseEntity<GetItemByIdResult> getItemById(@PathVariable String itemId) {
-        return ResponseEntity.ok(this.getItemById.process(GetItemByIdInput.builder().id(itemId).build()));
+    public ResponseEntity<GetItemByIdResult> getItemById(@PathVariable @UUID String itemId) {
+        return ResponseEntity.ok(this.getItemById.process(GetItemByIdInput.builder().id(java.util.UUID.fromString(itemId)).build()));
     }
 
     @Operation(description = "Creates and returns item by input set of parameters.", summary = "Saves and returns.")

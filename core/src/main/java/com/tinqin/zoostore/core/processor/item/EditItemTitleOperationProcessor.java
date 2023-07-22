@@ -21,16 +21,10 @@ public class EditItemTitleOperationProcessor implements EditItemTitleOperation {
     private final ItemRepository itemRepository;
 
     @Override
-    public EditItemTitleResult process(EditItemTitleInput request) {
-        Optional<Item> itemOptional = this.itemRepository.findById(UuidValidator.getUuid(request.getId()));
+    public EditItemTitleResult process(EditItemTitleInput input) {
+        Item item = this.itemRepository.findById(input.getId()).orElseThrow(() -> new ItemNotFoundException(input.getId()));
 
-        if (itemOptional.isEmpty()) {
-            throw new ItemNotFoundException(request.getId());
-        }
-
-        Item item = itemOptional.get();
-
-        item.setTitle(request.getTitle());
+        item.setTitle(input.getTitle());
 
         Item persisted = this.itemRepository.save(item);
 

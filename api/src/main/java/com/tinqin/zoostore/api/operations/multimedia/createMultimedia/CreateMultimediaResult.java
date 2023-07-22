@@ -6,10 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Setter(AccessLevel.PRIVATE)
 @Getter
 @Builder
 public class CreateMultimediaResult implements ProcessorResult {
-    private String id;
+    private UUID id;
     private String url;
 }

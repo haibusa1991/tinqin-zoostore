@@ -14,8 +14,8 @@ public class CreateTagOperationProcessor implements CreateTagOperation {
     private final TagRepository tagRepository;
 
     @Override
-    public CreateTagResult process(CreateTagInput request) {
-        Tag persisted = this.tagRepository.save(Tag.builder().name(request.getName()).build());
+    public CreateTagResult process(CreateTagInput input) {
+        Tag persisted = this.tagRepository.save(Tag.builder().name(input.getName()).build());
 
         return CreateTagResult.builder()
                 .id(persisted.getId())

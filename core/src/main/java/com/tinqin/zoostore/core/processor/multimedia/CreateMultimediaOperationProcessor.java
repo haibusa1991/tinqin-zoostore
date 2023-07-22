@@ -18,7 +18,7 @@ public class CreateMultimediaOperationProcessor implements CreateMultimediaOpera
         Multimedia persisted = this.multimediaRepository.save(Multimedia.builder().url(request.getUrl()).build());
 
         return CreateMultimediaResult.builder()
-                .id(persisted.getId().toString())
+                .id(persisted.getId())
                 .url(persisted.getUrl())
                 .build();
     }

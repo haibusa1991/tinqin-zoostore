@@ -1,7 +1,9 @@
 package com.tinqin.zoostore.api.operations.item.getItemById;
 
 import com.tinqin.zoostore.api.base.ProcessorResult;
+import com.tinqin.zoostore.api.operations.item.BaseEditItemResult;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
@@ -9,8 +11,10 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
+//public class GetItemByIdResult extends BaseEditItemResult implements ProcessorResult {
 public class GetItemByIdResult implements ProcessorResult {
+
 
     private UUID id;
     private String title;

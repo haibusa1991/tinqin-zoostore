@@ -1,6 +1,8 @@
 package com.tinqin.zoostore.rest;
 
 import com.tinqin.zoostore.core.exception.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -45,9 +47,20 @@ public class RestControllerAdviceExceptionHandlerConfiguration {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ExceptionHandler({HttpMessageNotReadableException.class,})
     @ResponseBody
     public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
         return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e){
+        String message = e.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.joining(System.lineSeparator()));
+
+        return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
     }
 }
