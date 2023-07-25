@@ -11,9 +11,6 @@ import com.tinqin.zoostore.api.operations.vendor.getAllVendor.GetAllVendorInput;
 import com.tinqin.zoostore.api.operations.vendor.getAllVendor.GetAllVendorResult;
 import com.tinqin.zoostore.api.operations.vendor.getVendorById.GetVendorByIdInput;
 import com.tinqin.zoostore.api.operations.vendor.getVendorById.GetVendorByIdResult;
-import com.tinqin.zoostore.core.exception.MultimediaNotFoundException;
-import com.tinqin.zoostore.core.exception.TagNotFoundException;
-import com.tinqin.zoostore.core.exception.VendorNotFoundException;
 import com.tinqin.zoostore.api.operations.vendor.getVendorById.GetVendorByIdOperation;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
@@ -44,7 +41,7 @@ public class VendorController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateVendorResult> createVendorRequest(@RequestBody CreateVendorInput request) {
+    public ResponseEntity<CreateVendorResult> createVendor(@RequestBody CreateVendorInput request) {
         return new ResponseEntity<>(this.createVendor.process(request), HttpStatus.CREATED);
     }
 

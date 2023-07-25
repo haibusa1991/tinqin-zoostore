@@ -3,6 +3,9 @@ package com.tinqin.zoostore.rest.controller;
 import com.tinqin.zoostore.api.operations.item.createItem.CreateItemOperation;
 import com.tinqin.zoostore.api.operations.item.createItem.CreateItemInput;
 import com.tinqin.zoostore.api.operations.item.createItem.CreateItemResult;
+import com.tinqin.zoostore.api.operations.item.editItem.EditItemInput;
+import com.tinqin.zoostore.api.operations.item.editItem.EditItemOperation;
+import com.tinqin.zoostore.api.operations.item.editItem.EditItemResult;
 import com.tinqin.zoostore.api.operations.item.editItemDescription.EditItemDescriptionOperation;
 import com.tinqin.zoostore.api.operations.item.editItemDescription.EditItemDescriptionInput;
 import com.tinqin.zoostore.api.operations.item.editItemDescription.EditItemDescriptionResult;
@@ -46,12 +49,13 @@ public class ItemController {
     private final CreateItemOperation createItem;
     private final GetAllItemOperation getAllItem;
     private final GetItemByIdOperation getItemById;
-    private final EditItemTitleOperation editItemTitle;
-    private final EditItemDescriptionOperation editItemDescription;
-    private final EditItemVendorOperation editItemVendor;
-    private final EditItemMultimediaOperation editItemMultimedia;
-    private final EditItemTagOperation editItemTag;
-    private final UpdateArchivedStatusOperation updateArchivedStatus;
+    private final EditItemOperation editItem;
+//    private final EditItemTitleOperation editItemTitle;
+//    private final EditItemDescriptionOperation editItemDescription;
+//    private final EditItemVendorOperation editItemVendor;
+//    private final EditItemMultimediaOperation editItemMultimedia;
+//    private final EditItemTagOperation editItemTag;
+//    private final UpdateArchivedStatusOperation updateArchivedStatus;
 
     @Operation(description = "Returns list of all items", summary = "Get all items")
     @ApiResponse(responseCode = "404", description = "no items found", content = @Content())
@@ -77,34 +81,46 @@ public class ItemController {
         return new ResponseEntity<>(this.createItem.process(request), HttpStatus.CREATED);
     }
 
-    @PatchMapping(path = "/edit-title")
-    public ResponseEntity<EditItemTitleResult> editItemTitle(@RequestBody EditItemTitleInput request) {
-        return ResponseEntity.ok(this.editItemTitle.process(request));
+    @PutMapping(path = "/{itemId}")
+    public ResponseEntity<EditItemResult> editItem(@RequestBody EditItemInput input, @PathVariable @UUID String itemId) {
+        input.setId(itemId);
+        return ResponseEntity.ok(this.editItem.process(input));
     }
 
-    @PatchMapping(path = "/edit-description")
-    public ResponseEntity<EditItemDescriptionResult> editItemDescription(@RequestBody EditItemDescriptionInput request) {
-        return ResponseEntity.ok(this.editItemDescription.process(request));
-    }
-
-    @PatchMapping(path = "/edit-vendor")
-    public ResponseEntity<EditItemVendorResult> editItemVendor(@RequestBody EditItemVendorInput request) {
-        return ResponseEntity.ok(this.editItemVendor.process(request));
-    }
-
-    @PatchMapping(path = "/edit-multimedia")
-    public ResponseEntity<EditItemMultimediaResult> editItemMultimedia(@RequestBody EditItemMultimediaInput request) {
-        return ResponseEntity.ok(this.editItemMultimedia.process(request));
-    }
-
-    @PatchMapping(path = "/edit-tag")
-    public ResponseEntity<EditItemTagResult> editItemTags(@RequestBody EditItemTagInput request) {
-        return ResponseEntity.ok(this.editItemTag.process(request));
-    }
-
-    @PatchMapping(path = "/archive")
-    public ResponseEntity<UpdateArchivedStatusResult> updateArchivedStatus(@RequestBody UpdateArchivedStatusInput request) {
-        return ResponseEntity.ok(this.updateArchivedStatus.process(request));
-    }
+//    @PatchMapping(path = "/{itemId}/edit-title")
+//    public ResponseEntity<EditItemTitleResult> editItemTitle(@RequestBody EditItemTitleInput request, @PathVariable @UUID String itemId) {
+//        request.setId(java.util.UUID.fromString(itemId));
+//        return ResponseEntity.ok(this.editItemTitle.process(request));
+//    }
+//
+//    @PatchMapping(path = "/{itemId}/edit-description")
+//    public ResponseEntity<EditItemDescriptionResult> editItemDescription(@RequestBody EditItemDescriptionInput request, @PathVariable @UUID String itemId) {
+//        request.setId(java.util.UUID.fromString(itemId));
+//        return ResponseEntity.ok(this.editItemDescription.process(request));
+//    }
+//
+//    @PatchMapping(path = "/{itemId}/edit-vendor")
+//    public ResponseEntity<EditItemVendorResult> editItemVendor(@RequestBody EditItemVendorInput request, @PathVariable @UUID String itemId) {
+//        request.setId(java.util.UUID.fromString(itemId));
+//        return ResponseEntity.ok(this.editItemVendor.process(request));
+//    }
+//
+//    @PatchMapping(path = "/{itemId}/edit-multimedia")
+//    public ResponseEntity<EditItemMultimediaResult> editItemMultimedia(@RequestBody EditItemMultimediaInput request, @PathVariable @UUID String itemId) {
+//        request.setId(java.util.UUID.fromString(itemId));
+//        return ResponseEntity.ok(this.editItemMultimedia.process(request));
+//    }
+//
+//    @PatchMapping(path = "/{itemId}/edit-tag")
+//    public ResponseEntity<EditItemTagResult> editItemTags(@RequestBody EditItemTagInput request, @PathVariable @UUID String itemId) {
+//        request.setId(java.util.UUID.fromString(itemId));
+//        return ResponseEntity.ok(this.editItemTag.process(request));
+//    }
+//
+//    @PatchMapping(path = "/{itemId}/archive")
+//    public ResponseEntity<UpdateArchivedStatusResult> updateArchivedStatus(@RequestBody UpdateArchivedStatusInput request, @PathVariable @UUID String itemId) {
+//        request.setId(java.util.UUID.fromString(itemId));
+//        return ResponseEntity.ok(this.updateArchivedStatus.process(request));
+//    }
 
 }
