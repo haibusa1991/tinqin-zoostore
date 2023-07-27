@@ -61,9 +61,23 @@ public class ItemController {
     @ApiResponse(responseCode = "404", description = "no items found", content = @Content())
     @ApiResponse(responseCode = "200", description = "list of all items")
     @GetMapping()
-    public ResponseEntity<GetAllItemsResult> getAllItems(@RequestParam(required = false, defaultValue = "false") Boolean includeArchived) throws MultimediaNotFoundException, TagNotFoundException, VendorNotFoundException, ItemNotFoundException {
-        return ResponseEntity.ok(this.getAllItem.process(GetAllItemInput.builder().shouldIncludeArchived(includeArchived).build()));
+    public ResponseEntity<GetAllItemsResult> getAllItems(
+            @RequestParam(required = false, defaultValue = "false") Boolean includeArchived,
+            @RequestParam(required = false, defaultValue = "") @UUID(allowEmpty = true) String tag,
+            @RequestParam(defaultValue = "2") Integer itemCount,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+
+        GetAllItemInput input = GetAllItemInput.builder()
+                .shouldIncludeArchived(includeArchived)
+                .tagId(tag.length() == 0 ? null : java.util.UUID.fromString(tag))
+                .itemCount(itemCount)
+                .page(page)
+                .build();
+
+        return ResponseEntity.ok(this.getAllItem.process(input));
     }
+
 
     @Operation(description = "Returns the requested item when requested by id.", summary = "Returns item by id.")
     @ApiResponse(responseCode = "200", description = "Returns item.")

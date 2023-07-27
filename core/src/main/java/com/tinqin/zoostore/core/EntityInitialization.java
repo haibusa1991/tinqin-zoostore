@@ -1,4 +1,4 @@
-package com.tinqin.zoostore.rest;
+package com.tinqin.zoostore.core;
 
 import com.tinqin.zoostore.persistence.entity.Item;
 import com.tinqin.zoostore.persistence.entity.Tag;
@@ -41,6 +41,7 @@ public class EntityInitialization implements CommandLineRunner {
             return;
         }
         List<Tag> tags = List.of(Tag.builder().name("cat food").build(),
+                Tag.builder().name("dog food").build(),
                 Tag.builder().name("treat").build());
 
         this.tagRepository.saveAll(tags);
@@ -50,7 +51,12 @@ public class EntityInitialization implements CommandLineRunner {
         if (this.vendorRepository.count() > 0) {
             return;
         }
-        this.vendorRepository.save(Vendor.builder().name("Whiskas").build());
+
+        List<Vendor> vendors = List.of(
+                Vendor.builder().name("Whiskas").build(),
+                Vendor.builder().name("Purina").build());
+
+        this.vendorRepository.saveAll(vendors);
     }
 
     public void initItems() {
@@ -59,30 +65,57 @@ public class EntityInitialization implements CommandLineRunner {
         }
 
         Vendor whiskas = this.vendorRepository.findByName("Whiskas");
+        Vendor purina = this.vendorRepository.findByName("Purina");
+
         Tag catFood = this.tagRepository.findTagByName("cat food");
+        Tag dogFood = this.tagRepository.findTagByName("dog food");
         Tag treat = this.tagRepository.findTagByName("treat");
 
-        Item archived = Item.builder()
-                .title("Old dog food")
-                .description("This is an archived item")
-                .vendor(whiskas)
-                .build();
-        archived.setIsArchived(true);
+//        Item archived = Item.builder()
+//                .title("Old dog food")
+//                .description("This is an archived item")
+//                .vendor(whiskas)
+//                .build();
+//        archived.setIsArchived(true);
 
 
-        List<Item> items = List.of(Item.builder()
-                        .title("Anti-Hairball")
+        List<Item> items = List.of(
+                Item.builder()
+                        .title("Anti-Hairball 1")
                         .description("Reduces the risk of hairball forming.")
                         .vendor(whiskas)
                         .tags(Set.of(catFood))
                         .build(),
                 Item.builder()
-                        .title("Crunchy pockets")
+                        .title("Anti-Hairball 2")
+                        .description("Reduces the risk of hairball forming.")
+                        .vendor(whiskas)
+                        .tags(Set.of(dogFood))
+                        .build(),
+                Item.builder()
+                        .title("Anti-Hairball 3")
+                        .description("Reduces the risk of hairball forming.")
+                        .vendor(whiskas)
+                        .tags(Set.of(treat))
+                        .build(),
+                Item.builder()
+                        .title("Crunchy pockets 1")
+                        .description("Crunchy treat with soft filling.")
+                        .vendor(whiskas)
+                        .tags(Set.of(catFood))
+                        .build(),
+                Item.builder()
+                        .title("Crunchy pockets 2")
+                        .description("Crunchy treat with soft filling.")
+                        .vendor(whiskas)
+                        .tags(Set.of(dogFood, treat))
+                        .build(),
+                Item.builder()
+                        .title("Crunchy pockets 3")
                         .description("Crunchy treat with soft filling.")
                         .vendor(whiskas)
                         .tags(Set.of(catFood, treat))
-                        .build(),
-                archived
+                        .build()
         );
 
         this.itemRepository.saveAll(items);

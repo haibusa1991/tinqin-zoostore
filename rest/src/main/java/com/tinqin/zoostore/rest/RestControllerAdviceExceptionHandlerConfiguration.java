@@ -53,6 +53,12 @@ public class RestControllerAdviceExceptionHandlerConfiguration {
         return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({PageableParameterException.class,})
+    @ResponseBody
+    public ResponseEntity<String> handlePageableParameterException(PageableParameterException e){
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e){
