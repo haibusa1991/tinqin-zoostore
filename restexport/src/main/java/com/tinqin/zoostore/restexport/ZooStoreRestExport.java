@@ -42,9 +42,14 @@ import feign.RequestLine;
 @Headers({"Content-Type: application/json"})
 public interface ZooStoreRestExport {
 
-    //Item
-    @RequestLine("GET /items")
-    GetAllItemsResult getAllItems();
+    //region Item
+    @RequestLine("GET /items?includeArchived={isArchived}&tag={tagId}&itemCount={itemCount}&page={page}")
+    GetAllItemsResult getAllItems(
+            @Param("isArchived") Boolean isArchived,
+            @Param("tagId") String tagId,
+            @Param("itemCount") Integer itemCount,
+            @Param("page") Integer page
+    );
 
     @RequestLine("GET /items/{itemId}")
     GetItemByIdResult getItemById(@Param("itemId") String itemId);
@@ -72,6 +77,8 @@ public interface ZooStoreRestExport {
 //
 //    @RequestLine("PATCH /items/{itemId}/archive")
 //    UpdateArchivedStatusResult updateArchivedStatus(@Param("itemId") String itemId, @Param UpdateArchivedStatusInput input);
+
+    //endregion
 
     //Multimedia
     @RequestLine("GET /multimedia")

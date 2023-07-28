@@ -10,7 +10,9 @@ import lombok.experimental.SuperBuilder;
 //@NoArgsConstructor
 //@AllArgsConstructor
 public class GetAllItemOperationProcessorSingleItem extends BaseEditItemResult {
-//    private UUID id;
+    public GetAllItemOperationProcessorSingleItem() {
+    }
+    //    private UUID id;
 //    private String title;
 //    private String description;
 //    private UUID vendorId;
