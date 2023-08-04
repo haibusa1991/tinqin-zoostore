@@ -32,3 +32,7 @@
 
 5. Payment processor
 
+storage controller
+ - thread sleedp 500 ms
+ - вместо да се взимат количествата по списък, да се пуснат отделни заявки
+ - заяките да се пуснат като parallel stream
