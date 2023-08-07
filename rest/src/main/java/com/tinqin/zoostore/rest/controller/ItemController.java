@@ -27,6 +27,9 @@ import com.tinqin.zoostore.api.operations.item.getAllItem.GetAllItemsResult;
 import com.tinqin.zoostore.api.operations.item.getItemById.GetItemByIdOperation;
 import com.tinqin.zoostore.api.operations.item.getItemById.GetItemByIdInput;
 import com.tinqin.zoostore.api.operations.item.getItemById.GetItemByIdResult;
+import com.tinqin.zoostore.api.operations.item.getItemByPartialTitle.GetItemByPartialTitleInput;
+import com.tinqin.zoostore.api.operations.item.getItemByPartialTitle.GetItemByPartialTitleOperation;
+import com.tinqin.zoostore.api.operations.item.getItemByPartialTitle.GetItemByPartialTitleResult;
 import com.tinqin.zoostore.api.operations.item.updateArchivedStatus.UpdateArchivedStatusOperation;
 import com.tinqin.zoostore.api.operations.item.updateArchivedStatus.UpdateArchivedStatusInput;
 import com.tinqin.zoostore.api.operations.item.updateArchivedStatus.UpdateArchivedStatusResult;
@@ -50,6 +53,7 @@ public class ItemController {
     private final GetAllItemOperation getAllItem;
     private final GetItemByIdOperation getItemById;
     private final EditItemOperation editItem;
+    private final GetItemByPartialTitleOperation getItemByPartialTitle;
 //    private final EditItemTitleOperation editItemTitle;
 //    private final EditItemDescriptionOperation editItemDescription;
 //    private final EditItemVendorOperation editItemVendor;
@@ -78,6 +82,21 @@ public class ItemController {
         return ResponseEntity.ok(this.getAllItem.process(input));
     }
 
+    @GetMapping(path = "/partial")
+    public ResponseEntity<GetItemByPartialTitleResult> getItemByPartialTitle(
+            @RequestParam String title,
+            @RequestParam(defaultValue = "2") Integer itemCount,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        GetItemByPartialTitleInput input = GetItemByPartialTitleInput.builder()
+                .title(title)
+                .itemCount(itemCount)
+                .page(page)
+                .build();
+
+        return ResponseEntity.ok(this.getItemByPartialTitle.process(input));
+    }
+
 
     @Operation(description = "Returns the requested item when requested by id.", summary = "Returns item by id.")
     @ApiResponse(responseCode = "200", description = "Returns item.")
@@ -86,6 +105,7 @@ public class ItemController {
     public ResponseEntity<GetItemByIdResult> getItemById(@PathVariable @UUID String itemId) {
         return ResponseEntity.ok(this.getItemById.process(GetItemByIdInput.builder().id(java.util.UUID.fromString(itemId)).build()));
     }
+
 
     @Operation(description = "Creates and returns item by input set of parameters.", summary = "Saves and returns.")
     @ApiResponse(responseCode = "200", description = "Returns item.")
