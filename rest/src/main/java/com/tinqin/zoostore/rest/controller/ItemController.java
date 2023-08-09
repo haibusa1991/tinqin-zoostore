@@ -37,6 +37,7 @@ import com.tinqin.zoostore.core.exception.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
@@ -85,8 +86,8 @@ public class ItemController {
     @GetMapping(path = "/partial")
     public ResponseEntity<GetItemByPartialTitleResult> getItemByPartialTitle(
             @RequestParam String title,
-            @RequestParam(defaultValue = "2") Integer itemCount,
-            @RequestParam(defaultValue = "1") Integer page
+            @RequestParam(defaultValue = "2") @Positive Integer itemCount,
+            @RequestParam(defaultValue = "1") @Positive Integer page
     ) {
         GetItemByPartialTitleInput input = GetItemByPartialTitleInput.builder()
                 .title(title)

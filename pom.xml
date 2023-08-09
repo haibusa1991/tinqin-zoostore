@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>0.0.7-SNAPSHOT</revision>
+        <revision>0.0.8-SNAPSHOT</revision>
         <java.version>17</java.version>
     </properties>
 

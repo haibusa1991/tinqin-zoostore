@@ -16,6 +16,8 @@ import com.tinqin.zoostore.api.operations.item.editItemVendor.EditItemVendorInpu
 import com.tinqin.zoostore.api.operations.item.editItemVendor.EditItemVendorResult;
 import com.tinqin.zoostore.api.operations.item.getAllItem.GetAllItemsResult;
 import com.tinqin.zoostore.api.operations.item.getItemById.GetItemByIdResult;
+import com.tinqin.zoostore.api.operations.item.getItemByPartialTitle.GetItemByPartialTitleInput;
+import com.tinqin.zoostore.api.operations.item.getItemByPartialTitle.GetItemByPartialTitleResult;
 import com.tinqin.zoostore.api.operations.item.updateArchivedStatus.UpdateArchivedStatusInput;
 import com.tinqin.zoostore.api.operations.item.updateArchivedStatus.UpdateArchivedStatusResult;
 import com.tinqin.zoostore.api.operations.multimedia.createMultimedia.CreateMultimediaInput;
@@ -38,6 +40,9 @@ import com.tinqin.zoostore.api.operations.vendor.getVendorById.GetVendorByIdResu
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Headers({"Content-Type: application/json"})
 public interface ZooStoreRestExport {
@@ -59,6 +64,14 @@ public interface ZooStoreRestExport {
 
     @RequestLine("PUT /items/{itemId}")
     EditItemResult editItem(@Param("itemId") String itemId, @Param EditItemInput input);
+
+    @RequestLine("GET /items/partial?title={title}&itemCount={itemCount}&page={page}")
+    GetItemByPartialTitleResult getItemByPartialTitle(
+            @Param("title") String title,
+            @Param("itemCount") Integer itemCount,
+            @Param("page") Integer page
+    );
+
 
 //    @RequestLine("PATCH /items/{itemId}/edit-title")
 //    EditItemTitleResult editItemTitle(@Param("itemId") String itemId, @Param EditItemTitleInput input);
