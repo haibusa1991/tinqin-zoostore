@@ -40,8 +40,8 @@ public class MultimediaController {
             @ApiResponse(responseCode = "200", description = "Returns all items or empty array.")})
     @RestExport
     @GetMapping()
-    public ResponseEntity<GetAllMultimediaResult> getAllMultimedia(GetAllMultimediaInput request) {
-        return ResponseEntity.ok(this.getAllMultimedia.process(request));
+    public ResponseEntity<GetAllMultimediaResult> getAllMultimedia() {
+        return ResponseEntity.ok(this.getAllMultimedia.process(new GetAllMultimediaInput()));
     }
 
     @Operation(description = "Returns multimedia by specified id.", summary = "Returns multimedia by id.")

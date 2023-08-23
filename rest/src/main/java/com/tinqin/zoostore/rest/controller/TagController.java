@@ -41,8 +41,8 @@ public class TagController {
             @ApiResponse(responseCode = "200", description = "Returns all tags or empty array.")})
     @RestExport
     @GetMapping()
-    public ResponseEntity<GetAllTagResult> getAllTags(GetAllTagInput input) {
-        return ResponseEntity.ok(this.getAllTag.process(input));
+    public ResponseEntity<GetAllTagResult> getAllTags() {
+        return ResponseEntity.ok(this.getAllTag.process(new GetAllTagInput()));
     }
     @Operation(description = "Returns tag by specified id.", summary = "Returns tag by id.")
     @ApiResponses(value = {

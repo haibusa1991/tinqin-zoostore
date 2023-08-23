@@ -37,19 +37,12 @@
             <scope>compile</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.tinqin.zoostore</groupId>-->
-<!--            <artifactId>restexportprocessor</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--        </dependency>-->
-
-
-        <!--        <dependency>-->
-<!--            <groupId>com.tinqin.zoostore</groupId>-->
-<!--            <artifactId>restexportprocessor</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--        </dependency>-->
-
+        <dependency>
+            <groupId>com.tinqin.zoostore</groupId>
+            <artifactId>annotation-processor</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -58,16 +51,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <configuration>-->
-<!--                    <mainClass>com.tinqin.zoostore.rest.TinqinZoostoreApplication</mainClass>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
             </plugin>
         </plugins>
     </build>

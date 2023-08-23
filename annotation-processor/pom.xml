@@ -7,10 +7,24 @@
         <artifactId>zoostore</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>restexportprocessor</artifactId>
+    <artifactId>annotation-processor</artifactId>
     <version>${revision}</version>
-    <name>rest-export-processor</name>
-    <description>rest-export-processor</description>
+    <name>annotation-processor</name>
+    <description>annotation-processor</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tinqin.restexport</groupId>
+            <artifactId>restexport</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -21,24 +35,7 @@
                 <goals>
                     <goal>compile</goal>
                 </goals>
-
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <goals>
-                    <goal>compile</goal>
-                </goals>
                 <configuration>
-                    <annotationProcessorPaths>
-                        <processorPath>
-                            <groupId>com.tinqin.zoostore</groupId>
-                            <artifactId>restexport</artifactId>
-                            <version>${revision}</version>
-                        </processorPath>
-                    </annotationProcessorPaths>
                     <failOnError>true</failOnError>
                     <showWarnings>true</showWarnings>
                 </configuration>
