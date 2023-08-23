@@ -1,5 +1,6 @@
 package com.tinqin.zoostore.rest.controller;
 
+import com.tinqin.restexport.annotation.RestExport;
 import com.tinqin.zoostore.api.operations.item.createItem.CreateItemOperation;
 import com.tinqin.zoostore.api.operations.item.createItem.CreateItemInput;
 import com.tinqin.zoostore.api.operations.item.createItem.CreateItemResult;
@@ -37,6 +38,7 @@ import com.tinqin.zoostore.core.exception.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
@@ -55,17 +57,14 @@ public class ItemController {
     private final GetItemByIdOperation getItemById;
     private final EditItemOperation editItem;
     private final GetItemByPartialTitleOperation getItemByPartialTitle;
-//    private final EditItemTitleOperation editItemTitle;
-//    private final EditItemDescriptionOperation editItemDescription;
-//    private final EditItemVendorOperation editItemVendor;
-//    private final EditItemMultimediaOperation editItemMultimedia;
-//    private final EditItemTagOperation editItemTag;
-//    private final UpdateArchivedStatusOperation updateArchivedStatus;
 
-    @Operation(description = "Returns list of all items", summary = "Get all items")
-    @ApiResponse(responseCode = "404", description = "no items found", content = @Content())
-    @ApiResponse(responseCode = "200", description = "list of all items")
-    @GetMapping()
+    @Operation(description = "Returns list of all items.", summary = "Gets all items.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "No items found.", content = @Content()),
+            @ApiResponse(responseCode = "400", description = "Items per page is less than 1 or page is less than 1.", content = @Content()),
+            @ApiResponse(responseCode = "200", description = "List of all items.")})
+    @RestExport
+    @GetMapping
     public ResponseEntity<GetAllItemsResult> getAllItems(
             @RequestParam(required = false, defaultValue = "false") Boolean includeArchived,
             @RequestParam(required = false, defaultValue = "") @UUID(allowEmpty = true) String tag,
@@ -82,7 +81,12 @@ public class ItemController {
 
         return ResponseEntity.ok(this.getAllItem.process(input));
     }
-
+    @Operation(description = "Returns list of all items with partial match of the title.", summary = "Gets all items with partial title match.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "No items found.", content = @Content()),
+            @ApiResponse(responseCode = "400", description = "Items per page is less than 1 or page is less than 1.", content = @Content()),
+            @ApiResponse(responseCode = "200", description = "List of all items with partial title match.")})
+    @RestExport
     @GetMapping(path = "/partial")
     public ResponseEntity<GetItemByPartialTitleResult> getItemByPartialTitle(
             @RequestParam String title,
@@ -108,54 +112,25 @@ public class ItemController {
     }
 
 
-    @Operation(description = "Creates and returns item by input set of parameters.", summary = "Saves and returns.")
-    @ApiResponse(responseCode = "200", description = "Returns item.")
-    @ApiResponse(responseCode = "400", description = "Invalid input")
+    @Operation(description = "Creates and returns an item by input set of parameters.", summary = "Saves and returns item data.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Vendor/Tag/Multimedia id is invalid.", content = @Content()),
+            @ApiResponse(responseCode = "200", description = "Returns the item with matching id.")})
     @PostMapping()
+    @RestExport
     public ResponseEntity<CreateItemResult> createItem(@RequestBody CreateItemInput request) {
         return new ResponseEntity<>(this.createItem.process(request), HttpStatus.CREATED);
     }
 
+    @Operation(description = "Edits and returns an by id.", summary = "Edits and returns item data.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Item/Vendor/Tag/Multimedia with specified id not found.", content = @Content()),
+            @ApiResponse(responseCode = "400", description = "Item/Vendor/Tag/Multimedia id is invalid.", content = @Content()),
+            @ApiResponse(responseCode = "200", description = "Returns the item with matching id.")})
+    @RestExport
     @PutMapping(path = "/{itemId}")
     public ResponseEntity<EditItemResult> editItem(@RequestBody EditItemInput input, @PathVariable @UUID String itemId) {
         input.setId(itemId);
         return ResponseEntity.ok(this.editItem.process(input));
     }
-
-//    @PatchMapping(path = "/{itemId}/edit-title")
-//    public ResponseEntity<EditItemTitleResult> editItemTitle(@RequestBody EditItemTitleInput request, @PathVariable @UUID String itemId) {
-//        request.setId(java.util.UUID.fromString(itemId));
-//        return ResponseEntity.ok(this.editItemTitle.process(request));
-//    }
-//
-//    @PatchMapping(path = "/{itemId}/edit-description")
-//    public ResponseEntity<EditItemDescriptionResult> editItemDescription(@RequestBody EditItemDescriptionInput request, @PathVariable @UUID String itemId) {
-//        request.setId(java.util.UUID.fromString(itemId));
-//        return ResponseEntity.ok(this.editItemDescription.process(request));
-//    }
-//
-//    @PatchMapping(path = "/{itemId}/edit-vendor")
-//    public ResponseEntity<EditItemVendorResult> editItemVendor(@RequestBody EditItemVendorInput request, @PathVariable @UUID String itemId) {
-//        request.setId(java.util.UUID.fromString(itemId));
-//        return ResponseEntity.ok(this.editItemVendor.process(request));
-//    }
-//
-//    @PatchMapping(path = "/{itemId}/edit-multimedia")
-//    public ResponseEntity<EditItemMultimediaResult> editItemMultimedia(@RequestBody EditItemMultimediaInput request, @PathVariable @UUID String itemId) {
-//        request.setId(java.util.UUID.fromString(itemId));
-//        return ResponseEntity.ok(this.editItemMultimedia.process(request));
-//    }
-//
-//    @PatchMapping(path = "/{itemId}/edit-tag")
-//    public ResponseEntity<EditItemTagResult> editItemTags(@RequestBody EditItemTagInput request, @PathVariable @UUID String itemId) {
-//        request.setId(java.util.UUID.fromString(itemId));
-//        return ResponseEntity.ok(this.editItemTag.process(request));
-//    }
-//
-//    @PatchMapping(path = "/{itemId}/archive")
-//    public ResponseEntity<UpdateArchivedStatusResult> updateArchivedStatus(@RequestBody UpdateArchivedStatusInput request, @PathVariable @UUID String itemId) {
-//        request.setId(java.util.UUID.fromString(itemId));
-//        return ResponseEntity.ok(this.updateArchivedStatus.process(request));
-//    }
-
 }

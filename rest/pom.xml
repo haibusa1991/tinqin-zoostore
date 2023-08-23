@@ -30,6 +30,26 @@
             <version>2.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.tinqin.restexport</groupId>
+            <artifactId>restexport</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.tinqin.zoostore</groupId>-->
+<!--            <artifactId>restexportprocessor</artifactId>-->
+<!--            <version>${revision}</version>-->
+<!--        </dependency>-->
+
+
+        <!--        <dependency>-->
+<!--            <groupId>com.tinqin.zoostore</groupId>-->
+<!--            <artifactId>restexportprocessor</artifactId>-->
+<!--            <version>${revision}</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>
@@ -38,16 +58,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.tinqin.zoostore.rest.TinqinZoostoreApplication</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <configuration>-->
+<!--                    <mainClass>com.tinqin.zoostore.rest.TinqinZoostoreApplication</mainClass>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
             </plugin>
         </plugins>
     </build>
