@@ -17,10 +17,10 @@ public class RestExportProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        System.out.println("/////////////////**********************/////////////////**********************");
         com.tinqin.restexport.RestExportProcessor processor = new com.tinqin.restexport.RestExportProcessor(roundEnv,
                 "restexport/src/main/java",
-                "com.tinqin.zoostore.restexport.ZooStoreRestExport");
+                "com.tinqin.zoostore.restexport",
+                "ZooStoreRestExport");
 
         processor.processAnnotation();
         return false;
