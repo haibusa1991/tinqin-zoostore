@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.tinqin.restexport</groupId>
             <artifactId>restexport</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${rest-export-revision}</version>
             <scope>compile</scope>
         </dependency>
 
