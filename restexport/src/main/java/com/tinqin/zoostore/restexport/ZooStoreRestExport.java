@@ -5,6 +5,7 @@ import com.tinqin.zoostore.api.operations.item.createItem.CreateItemResult;
 import com.tinqin.zoostore.api.operations.item.editItem.EditItemInput;
 import com.tinqin.zoostore.api.operations.item.editItem.EditItemResult;
 import com.tinqin.zoostore.api.operations.item.getAllItem.GetAllItemsResult;
+import com.tinqin.zoostore.api.operations.item.getItemById.GetItemByIdResult;
 import com.tinqin.zoostore.api.operations.item.getItemByPartialTitle.GetItemByPartialTitleResult;
 import com.tinqin.zoostore.api.operations.multimedia.createMultimedia.CreateMultimediaInput;
 import com.tinqin.zoostore.api.operations.multimedia.createMultimedia.CreateMultimediaResult;
@@ -31,6 +32,9 @@ public interface ZooStoreRestExport {
 
     @RequestLine("GET /items/partial?title={title}&itemCount={itemCount}&page={page}")
     GetItemByPartialTitleResult getItemByPartialTitle(@Param("title") String title, @Param("itemCount") Integer itemCount, @Param("page") Integer page);
+
+    @RequestLine("GET /items/{itemId}")
+    GetItemByIdResult getItemById(@Param("itemId") String itemId);
 
     @RequestLine("POST /items")
     CreateItemResult createItem(@Param CreateItemInput request);

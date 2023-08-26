@@ -106,6 +106,7 @@ public class ItemController {
     @Operation(description = "Returns the requested item when requested by id.", summary = "Returns item by id.")
     @ApiResponse(responseCode = "200", description = "Returns item.")
     @ApiResponse(responseCode = "404", description = "No item found by the specified id.")
+    @RestExport
     @GetMapping(path = "/{itemId}")
     public ResponseEntity<GetItemByIdResult> getItemById(@PathVariable @UUID String itemId) {
         return ResponseEntity.ok(this.getItemById.process(GetItemByIdInput.builder().id(java.util.UUID.fromString(itemId)).build()));
