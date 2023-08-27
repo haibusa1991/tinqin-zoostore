@@ -39,7 +39,7 @@ public class MultimediaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns all items or empty array.")})
     @RestExport
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<GetAllMultimediaResult> getAllMultimedia() {
         return ResponseEntity.ok(this.getAllMultimedia.process(new GetAllMultimediaInput()));
     }
@@ -59,7 +59,7 @@ public class MultimediaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Creates and returns multimedia.")})
     @RestExport
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CreateMultimediaResult> createMultimedia(@RequestBody CreateMultimediaInput request) {
         return new ResponseEntity<>(this.createMultimedia.process(request), HttpStatus.CREATED);
     }

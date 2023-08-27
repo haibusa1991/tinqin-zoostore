@@ -24,7 +24,7 @@ public class Item extends BaseEntity {
         this.isArchived = false;
     }
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)

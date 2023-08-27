@@ -27,6 +27,7 @@ public class CreateItemOperationProcessor implements CreateItemOperation {
 
     @Override
     public CreateItemResult process(CreateItemInput input) {
+        System.out.println(input);
         Vendor vendor = this.vendorRepository
                 .findById(input.getVendorId())
                 .orElseThrow(() -> new VendorNotFoundException(input.getVendorId()));

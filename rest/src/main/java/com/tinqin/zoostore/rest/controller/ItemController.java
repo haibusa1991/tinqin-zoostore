@@ -117,7 +117,7 @@ public class ItemController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Vendor/Tag/Multimedia id is invalid.", content = @Content()),
             @ApiResponse(responseCode = "200", description = "Returns the item with matching id.")})
-    @PostMapping()
+    @PostMapping
     @RestExport
     public ResponseEntity<CreateItemResult> createItem(@RequestBody CreateItemInput request) {
         return new ResponseEntity<>(this.createItem.process(request), HttpStatus.CREATED);

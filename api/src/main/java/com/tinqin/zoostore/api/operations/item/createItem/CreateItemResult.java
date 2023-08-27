@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 //@NoArgsConstructor
 //@AllArgsConstructor
 @SuperBuilder
+@NoArgsConstructor
 public class CreateItemResult extends BaseEditItemResult implements ProcessorResult {
 //
 //    private UUID id;

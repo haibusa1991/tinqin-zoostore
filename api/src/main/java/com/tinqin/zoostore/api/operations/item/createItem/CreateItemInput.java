@@ -1,15 +1,15 @@
 package com.tinqin.zoostore.api.operations.item.createItem;
 
 import com.tinqin.zoostore.api.base.ProcessorInput;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
+@Builder
+@ToString
 public class CreateItemInput implements ProcessorInput {
 
     private String title;

@@ -31,12 +31,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.tinqin.restexport</groupId>
-      <artifactId>restexport</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>com.tinqin.zoostore</groupId>
       <artifactId>annotation-processor</artifactId>
       <version>0.0.8-SNAPSHOT</version>

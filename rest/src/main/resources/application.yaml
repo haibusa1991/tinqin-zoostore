@@ -1,8 +1,16 @@
+MYSQL_SERVER: "${MYSQL_SERVER_NAME}:${MYSQL_SERVER_PORT}"
+MYSQL_SERVER_NAME: localhost
+MYSQL_SERVER_PORT: 3306
+MYSQL_ROOT_PASSWORD: toor
+  
+ZOOSTORE_DB_NAME: tinqin-zoo_store
+
+
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
 #    url: ${MYSQL_CONNECTION_STRING}
-    url: jdbc:mysql://${MYSQL_SERVER}:${MYSQL_SERVER_PORT}/${ZOOSTORE_DB_NAME}?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${MYSQL_SERVER}/${ZOOSTORE_DB_NAME}?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
   sql:

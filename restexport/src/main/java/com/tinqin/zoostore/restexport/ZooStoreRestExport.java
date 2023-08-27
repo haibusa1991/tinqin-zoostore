@@ -37,10 +37,10 @@ public interface ZooStoreRestExport {
     GetItemByIdResult getItemById(@Param("itemId") String itemId);
 
     @RequestLine("POST /items")
-    CreateItemResult createItem(@Param CreateItemInput request);
+    CreateItemResult createItem(CreateItemInput request);
 
     @RequestLine("PUT /items/{itemId}")
-    EditItemResult editItem(@Param("itemId") String itemId, @Param EditItemInput input);
+    EditItemResult editItem(@Param("itemId") String itemId, EditItemInput input);
 
     @RequestLine("GET /multimedia")
     GetAllMultimediaResult getAllMultimedia();
@@ -49,10 +49,10 @@ public interface ZooStoreRestExport {
     GetMultimediaByIdResult getMultimediaById(@Param("multimediaId") String multimediaId);
 
     @RequestLine("POST /multimedia")
-    CreateMultimediaResult createMultimedia(@Param CreateMultimediaInput request);
+    CreateMultimediaResult createMultimedia(CreateMultimediaInput request);
 
     @RequestLine("PATCH /multimedia/edit")
-    EditMultimediaResult editMultimedia(@Param EditMultimediaInput request);
+    EditMultimediaResult editMultimedia(EditMultimediaInput request);
 
     @RequestLine("GET /tags")
     GetAllTagResult getAllTags();

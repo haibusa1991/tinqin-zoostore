@@ -30,7 +30,7 @@ public class VendorController {
     private final CreateVendorOperation createVendor;
     private final EditVendorOperation editVendor;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<GetAllVendorResult> getAllVendors() {
         return ResponseEntity.ok(this.getAllVendor.process(new GetAllVendorInput()));
     }

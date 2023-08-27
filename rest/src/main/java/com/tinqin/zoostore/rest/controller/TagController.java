@@ -40,7 +40,7 @@ public class TagController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns all tags or empty array.")})
     @RestExport
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<GetAllTagResult> getAllTags() {
         return ResponseEntity.ok(this.getAllTag.process(new GetAllTagInput()));
     }
@@ -55,7 +55,7 @@ public class TagController {
         return ResponseEntity.ok(this.getTagById.process(GetTagByIdInput.builder().id(java.util.UUID.fromString(tagId)).build()));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CreateTagResult> createTag(@RequestBody CreateTagInput request) {
         return new ResponseEntity<>(this.createTag.process(request), HttpStatus.CREATED);
     }
