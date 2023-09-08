@@ -24,6 +24,24 @@ import feign.RequestLine;
 })
 public interface ZooStoreRestExport {
 
+    @RequestLine("GET /tags")
+    GetAllTagResult getAllTags();
+
+    @RequestLine("GET /tags/{tagId}")
+    GetTagByIdResult getTagById(@Param("tagId") String tagId);
+
+    @RequestLine("GET /multimedia")
+    GetAllMultimediaResult getAllMultimedia();
+
+    @RequestLine("GET /multimedia/{multimediaId}")
+    GetMultimediaByIdResult getMultimediaById(@Param("multimediaId") String multimediaId);
+
+    @RequestLine("POST /multimedia")
+    CreateMultimediaResult createMultimedia(CreateMultimediaInput request);
+
+    @RequestLine("PATCH /multimedia/edit")
+    EditMultimediaResult editMultimedia(EditMultimediaInput request);
+
     @RequestLine("GET /items?includeArchived={includeArchived}&tag={tag}&itemCount={itemCount}&page={page}")
     GetAllItemsResult getAllItems(@Param("includeArchived") Boolean includeArchived,
         @Param("tag") String tag,
@@ -41,22 +59,4 @@ public interface ZooStoreRestExport {
 
     @RequestLine("PUT /items/{itemId}")
     EditItemResult editItem(@Param("itemId") String itemId, EditItemInput input);
-
-    @RequestLine("GET /multimedia")
-    GetAllMultimediaResult getAllMultimedia();
-
-    @RequestLine("GET /multimedia/{multimediaId}")
-    GetMultimediaByIdResult getMultimediaById(@Param("multimediaId") String multimediaId);
-
-    @RequestLine("POST /multimedia")
-    CreateMultimediaResult createMultimedia(CreateMultimediaInput request);
-
-    @RequestLine("PATCH /multimedia/edit")
-    EditMultimediaResult editMultimedia(EditMultimediaInput request);
-
-    @RequestLine("GET /tags")
-    GetAllTagResult getAllTags();
-
-    @RequestLine("GET /tags/{tagId}")
-    GetTagByIdResult getTagById(@Param("tagId") String tagId);
 }
